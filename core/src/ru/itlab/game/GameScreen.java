@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -18,8 +19,10 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
+import ru.itlab.game.Utils.Constants;
 import ru.itlab.game.Utils.TiledObjectUtil;
 
+import static ru.itlab.game.Utils.Constants.C_SPEED;
 import static ru.itlab.game.Utils.Constants.PPM;
 
 public class GameScreen implements Screen {
@@ -41,7 +44,7 @@ public class GameScreen implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth()/SCALE, Gdx.graphics.getHeight()/SCALE);
 
-        world = new World(new Vector2(0,-9.8f), false);
+        world = new World(new Vector2(0,0), false);
         b2dr = new Box2DDebugRenderer();
 
         player = createBox(140, 140, 32, 32, false);
@@ -104,16 +107,22 @@ public class GameScreen implements Screen {
     }
 
     public void inputUpdate(){
-        int horizontalForce = 0;
+        float horizontalForce = 0;
+        float verticalForce = 0;
 
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT))
             horizontalForce -= 1;
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT))
             horizontalForce += 1;
-        if(Gdx.input.isKeyJustPressed(Input.Keys.UP))
-            player.applyForceToCenter(0, 300, false);
-
-        player.setLinearVelocity(horizontalForce * 5, player.getLinearVelocity().y);
+        if(Gdx.input.isKeyPressed(Input.Keys.UP))
+            verticalForce += 1;
+        if(Gdx.input.isKeyPressed(Input.Keys.DOWN))
+            verticalForce -= 1;
+        if(verticalForce != 0 && horizontalForce != 0){
+            verticalForce /= Math.sqrt(2);
+            horizontalForce /= Math.sqrt(2);
+        }
+        player.setLinearVelocity(horizontalForce * C_SPEED / PPM, verticalForce * Constants.C_SPEED / PPM);
     }
 
     public void cameraUpdate(float delta){
