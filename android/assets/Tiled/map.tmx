@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.1.2" orientation="orthogonal" renderorder="right-down" width="12" height="12" tilewidth="32" tileheight="32" infinite="0" nextobjectid="13">
+ <tileset firstgid="1" name="32x32_map_tile v1.1_0" tilewidth="32" tileheight="32" spacing="1" tilecount="150" columns="15">
+  <image source="32x32_map_tile v1.1_0.png" width="494" height="329"/>
+ </tileset>
+ <layer name="Слой тайлов 1" width="12" height="12">
+  <data encoding="base64" compression="zlib">
+   eJxjZGBgYCISMwOxABALEomFRtUPOfXyQKxAJFYEYgBilwmR
+  </data>
+ </layer>
+ <objectgroup name="Collision">
+  <object id="12" x="0" y="0">
+   <polyline points="0,0 0,384 384,384 384,0 0,0"/>
+  </object>
+ </objectgroup>
+</map>

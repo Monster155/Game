@@ -2,10 +2,14 @@ package ru.itlab.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -14,27 +18,42 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
-import static ru.itlab.game.Constants.PPM;
+import ru.itlab.game.Utils.TiledObjectUtil;
+
+import static ru.itlab.game.Utils.Constants.PPM;
 
 public class GameScreen implements Screen {
 
     private boolean DEBUG = false;
+    private final float SCALE = 2;
 
     World world;
     OrthographicCamera camera;
     Box2DDebugRenderer b2dr;
     Body player, platform;
+    SpriteBatch batch;
+    Texture texture;
+    OrthogonalTiledMapRenderer tmr;
+    TiledMap map;
 
     @Override
     public void show() {
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
+        camera.setToOrtho(false, Gdx.graphics.getWidth()/SCALE, Gdx.graphics.getHeight()/SCALE);
 
         world = new World(new Vector2(0,-9.8f), false);
         b2dr = new Box2DDebugRenderer();
 
-        player = createBox(8, 10, 32, 32, false);
-        platform = createBox(0, 0, 64, 32, true);
+        player = createBox(140, 140, 32, 32, false);
+        platform = createBox(140, 130, 64, 32, true);
+
+        batch = new SpriteBatch();
+        texture = new Texture("box.png");
+
+        map = new TmxMapLoader().load("Tiled/map.tmx");
+        tmr = new OrthogonalTiledMapRenderer(map);
+
+        TiledObjectUtil.parseTiledObjectLayer(world, map.getLayers().get("Collision").getObjects());
     }
 
     @Override
@@ -44,18 +63,34 @@ public class GameScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        tmr.render();
+
+        batch.begin();
+        batch.draw(texture,
+                player.getPosition().x * PPM - (texture.getWidth()*1.6f),
+                player.getPosition().y * PPM - (texture.getHeight()*1.6f),
+                32,
+                32);
+        batch.end();
+
         b2dr.render(world, camera.combined.scl(PPM));
+
+        if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE))Gdx.app.exit();
     }
 
     @Override
     public void resize(int width, int height) {
-        camera.setToOrtho(false, width/2, height/2);
+        camera.setToOrtho(false, width/SCALE, height/SCALE);
     }
 
     @Override
     public void dispose() {
         world.dispose();
         b2dr.dispose();
+        batch.dispose();
+        texture.dispose();
+        tmr.dispose();
+        map.dispose();
     }
 
     public void update(float delta){
@@ -63,6 +98,9 @@ public class GameScreen implements Screen {
 
         inputUpdate();
         cameraUpdate(delta);
+        tmr.setView(camera);
+
+        batch.setProjectionMatrix(camera.combined);
     }
 
     public void inputUpdate(){
