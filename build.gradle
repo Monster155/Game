@@ -1,3 +1,5 @@
+import com.badlogic.gdx.tools.texturepacker.TexturePacker
+
 buildscript {
     
 
@@ -9,7 +11,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.2.0'
-        
+        classpath "com.badlogicgames.gdx:gdx-tools:1.7.0"
 
     }
 }
@@ -89,6 +91,19 @@ project(":core") {
         compile "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
         
     }
+
+    task packTextures {
+        def inputDir = "$rootDir/android/assets/PNG"
+        def outputDir = "$rootDir/android/assets/UFOs"
+        inputs.dir inputDir
+        outputs.dir outputDir
+        doLast {
+            delete(outputDir)
+            TexturePacker.process(inputDir, outputDir, "ufos")
+        }
+    }
+
+    project.tasks.compileJava.dependsOn packTextures
 }
 
 tasks.eclipse.doLast {

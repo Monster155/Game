@@ -24,6 +24,7 @@ import ru.itlab.game.Utils.TiledObjectUtil;
 
 import static ru.itlab.game.Utils.Constants.C_SPEED;
 import static ru.itlab.game.Utils.Constants.PPM;
+import static ru.itlab.game.Utils.Constants.SIZE;
 
 public class GameScreen implements Screen {
 
@@ -33,7 +34,7 @@ public class GameScreen implements Screen {
     World world;
     OrthographicCamera camera;
     Box2DDebugRenderer b2dr;
-    Body player, platform;
+    Body player;
     SpriteBatch batch;
     Texture texture;
     OrthogonalTiledMapRenderer tmr;
@@ -47,16 +48,15 @@ public class GameScreen implements Screen {
         world = new World(new Vector2(0,0), false);
         b2dr = new Box2DDebugRenderer();
 
-        player = createBox(140, 140, 32, 32, false);
-        platform = createBox(140, 130, 64, 32, true);
-
         batch = new SpriteBatch();
-        texture = new Texture("box.png");
+        texture = new Texture("PNG/blue1.png");
 
         map = new TmxMapLoader().load("Tiled/map.tmx");
         tmr = new OrthogonalTiledMapRenderer(map);
 
-        TiledObjectUtil.parseTiledObjectLayer(world, map.getLayers().get("Collision").getObjects());
+        player = createBox(500, 500, SIZE, SIZE, false);
+
+        TiledObjectUtil.parseTiledObjectLayer(world, map.getLayers().get("col").getObjects());
     }
 
     @Override
@@ -70,10 +70,10 @@ public class GameScreen implements Screen {
 
         batch.begin();
         batch.draw(texture,
-                player.getPosition().x * PPM - (texture.getWidth()*1.6f),
-                player.getPosition().y * PPM - (texture.getHeight()*1.6f),
-                32,
-                32);
+                player.getPosition().x * PPM - SIZE/2,
+                player.getPosition().y * PPM - SIZE/2,
+                SIZE,
+                SIZE);
         batch.end();
 
         b2dr.render(world, camera.combined.scl(PPM));
@@ -118,6 +118,8 @@ public class GameScreen implements Screen {
             verticalForce += 1;
         if(Gdx.input.isKeyPressed(Input.Keys.DOWN))
             verticalForce -= 1;
+        if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
+            C_SPEED *= 2;
         if(verticalForce != 0 && horizontalForce != 0){
             verticalForce /= Math.sqrt(2);
             horizontalForce /= Math.sqrt(2);
@@ -134,7 +136,7 @@ public class GameScreen implements Screen {
         camera.update();
     }
 
-    public Body createBox(int x, int y, int width, int height, boolean isStatic){
+    public Body createBox(int x, int y, float width, float height, boolean isStatic){
         Body pBody;
         BodyDef def = new BodyDef();
 

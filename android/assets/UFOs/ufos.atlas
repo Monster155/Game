@@ -1,0 +1,111 @@
+
+ufos.png
+size: 512,512
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+blue1
+  rotate: false
+  xy: 2, 357
+  size: 124, 145
+  orig: 124, 145
+  offset: 0, 0
+  index: -1
+blue2
+  rotate: false
+  xy: 2, 210
+  size: 124, 145
+  orig: 124, 145
+  offset: 0, 0
+  index: -1
+blue3
+  rotate: false
+  xy: 2, 63
+  size: 124, 145
+  orig: 124, 145
+  offset: 0, 0
+  index: -1
+green1
+  rotate: false
+  xy: 128, 250
+  size: 124, 123
+  orig: 124, 123
+  offset: 0, 0
+  index: -1
+green2
+  rotate: false
+  xy: 254, 250
+  size: 124, 123
+  orig: 124, 123
+  offset: 0, 0
+  index: -1
+green3
+  rotate: false
+  xy: 380, 250
+  size: 124, 123
+  orig: 124, 123
+  offset: 0, 0
+  index: -1
+pink1
+  rotate: false
+  xy: 128, 375
+  size: 124, 127
+  orig: 124, 127
+  offset: 0, 0
+  index: -1
+pink2
+  rotate: false
+  xy: 254, 375
+  size: 124, 127
+  orig: 124, 127
+  offset: 0, 0
+  index: -1
+pink3
+  rotate: false
+  xy: 380, 375
+  size: 124, 127
+  orig: 124, 127
+  offset: 0, 0
+  index: -1
+sand1
+  rotate: false
+  xy: 128, 126
+  size: 124, 122
+  orig: 124, 122
+  offset: 0, 0
+  index: -1
+sand2
+  rotate: false
+  xy: 128, 2
+  size: 124, 122
+  orig: 124, 122
+  offset: 0, 0
+  index: -1
+sand3
+  rotate: false
+  xy: 254, 126
+  size: 124, 122
+  orig: 124, 122
+  offset: 0, 0
+  index: -1
+yellow1
+  rotate: false
+  xy: 380, 140
+  size: 124, 108
+  orig: 124, 108
+  offset: 0, 0
+  index: -1
+yellow2
+  rotate: false
+  xy: 380, 30
+  size: 124, 108
+  orig: 124, 108
+  offset: 0, 0
+  index: -1
+yellow3
+  rotate: false
+  xy: 254, 16
+  size: 124, 108
+  orig: 124, 108
+  offset: 0, 0
+  index: -1
