@@ -1,10 +1,11 @@
 package ru.itlab.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
 
-import static ru.itlab.game.Utils.Constants.C_VISION;
 import static ru.itlab.game.Utils.Constants.PPM;
+
 
 public class Camera {
     public OrthographicCamera camera;
@@ -13,13 +14,13 @@ public class Camera {
     public Camera(Player player){
         this.player = player;
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, C_VISION.x/4, C_VISION.y/4);
+        camera.setToOrtho(false, Gdx.graphics.getWidth() / PPM, Gdx.graphics.getHeight() / PPM);
     }
 
     public void update(float delta){
         Vector3 position = camera.position;
-        position.x = player.player.getPosition().x * PPM;
-        position.y = player.player.getPosition().y * PPM;
+        position.x = player.body.getBody().getPosition().x;
+        position.y = player.body.getBody().getPosition().y;
         camera.position.set(position);
 
         camera.update();

@@ -5,43 +5,54 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 
 import ru.itlab.game.Utils.Constants;
-import ru.itlab.game.Utils.Enums;
-import ru.itlab.game.Utils.Enums.Rotation;
 import ru.itlab.game.Utils.Utils;
 
 import static ru.itlab.game.Utils.Constants.C_SPEED;
-import static ru.itlab.game.Utils.Constants.PPM;
 import static ru.itlab.game.Utils.Constants.SIZE;
 
 public class Player {
-    public Body player;
-    Texture texture;
-    public Rotation rotation;
+    public Fixture body;
+    public Texture texture;
     int lives = Constants.LIVES;
+    public Vector2 bulletRot;
 
     public Player(World world) {
-        player = Utils.createBox(world, 500, 500, SIZE, SIZE, false);
+        body = Utils.createBox(world, 500, 500, SIZE.x, SIZE.y,
+                false, "player", (short)1);
         texture = new Texture("PNG/blue1.png");
     }
 
     public void render(SpriteBatch batch){
         batch.draw(texture,
-                player.getPosition().x * PPM - SIZE/2,
-                player.getPosition().y * PPM - SIZE/2,
-                SIZE,
-                SIZE);
+                body.getBody().getPosition().x,
+                body.getBody().getPosition().y,
+                SIZE.x,
+                SIZE.y);
     }
 
     public void update(float delta){
         move(delta);
-        health();
+        fire();
     }
 
-    public void health(){
+    public void fire(){
+        bulletRot = new Vector2(0,0);
+        if(Gdx.input.isKeyPressed(Input.Keys.LEFT))
+            bulletRot.x--;
+        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT))
+            bulletRot.x++;
+
+        if(Gdx.input.isKeyPressed(Input.Keys.UP))
+            bulletRot.y++;
+        if(Gdx.input.isKeyPressed(Input.Keys.DOWN))
+            bulletRot.y--;
+    }
+
+    public void damaged(){
         if(lives  > 6){ //Damage level 1
 
         } else if(lives > 3){ //Damage level 2
@@ -54,42 +65,20 @@ public class Player {
     }
 
     public void move(float delta){
-        boolean left = Gdx.input.isKeyPressed(Input.Keys.LEFT);
-        boolean right = Gdx.input.isKeyPressed(Input.Keys.RIGHT);
-        boolean up = Gdx.input.isKeyPressed(Input.Keys.UP);
-        boolean down = Gdx.input.isKeyPressed(Input.Keys.DOWN);
-
         float x = 0, y = 0;
+        if(Gdx.input.isKeyPressed(Input.Keys.A))
+            x--;
+        if(Gdx.input.isKeyPressed(Input.Keys.D))
+            x++;
 
-        if(left && up && !down && !right){
-            rotation = Rotation.LEFTandUP;
-            x = (float) (-1*delta*C_SPEED/Math.sqrt(2));
-            y = -1*x;
-        } else if(left && !up && !down && !right){
-            rotation = Rotation.LEFT;
-            x = (float) (-1*delta*C_SPEED);
-        } else if(left && !up && down && !right){
-            rotation = Rotation.LEFTandDOWN;
-            x = (float) (-1*delta*C_SPEED/Math.sqrt(2));
-            y = x;
-        } else if(!left && !up && down && !right){
-            rotation = Rotation.DOWN;
-            y = (float) (-1*delta*C_SPEED);
-        } else if(!left && !up && down && right){
-            rotation = Rotation.RIGHTandDOWN;
-            x = (float) (delta*C_SPEED/Math.sqrt(2));
-            y = x*-1;
-        } else if(!left && !up && !down && right){
-            rotation = Rotation.RIGHT;
-            x = (float) (delta*C_SPEED);
-        } else if(!left && up && !down && right){
-            rotation = Rotation.RIGHTandUP;
-            x = (float) (delta*C_SPEED/Math.sqrt(2));
-            y = x;
-        } else if(!left && up && !down && !right){
-            rotation = Rotation.UP;
-            y = (float) (delta*C_SPEED);
-        }
-        player.setLinearVelocity(x, y);
+        if(Gdx.input.isKeyPressed(Input.Keys.W))
+            y++;
+        if(Gdx.input.isKeyPressed(Input.Keys.S))
+            y--;
+
+        if(y != 0 && x != 0)
+            body.getBody().setLinearVelocity(delta*C_SPEED*x/(float)Math.sqrt(2), delta*C_SPEED*y/(float)Math.sqrt(2));
+        else
+            body.getBody().setLinearVelocity(delta*C_SPEED*x, delta*C_SPEED*y);
     }
 }
