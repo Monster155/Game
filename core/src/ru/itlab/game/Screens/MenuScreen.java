@@ -15,7 +15,7 @@ public class MenuScreen implements Screen {
     @Override
     public void show(){
         batch = new SpriteBatch();
-        texture = new Texture("badfround.jpg");
+        texture = new Texture("masterpiece.png");
         scale = Gdx.graphics.getHeight() * texture.getWidth() / texture.getHeight();
         drawX = (scale - Gdx.graphics.getWidth()) / 2 * -1;
     }

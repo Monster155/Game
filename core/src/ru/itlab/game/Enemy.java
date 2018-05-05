@@ -65,7 +65,7 @@ public class Enemy {
 
     public Vector2 rand(Vector2 pos){
         float x,y;
-        float ax = rect.x, bx = rect.width, ay = rect.y, by = rect.height;
+        float ax = rect.x + 7*rect.width, bx = rect.width, ay = rect.y + 7*rect.height, by = rect.height;
         do{
             x = ax + (float)(Math.random() * bx);
             y = ay + (float)(Math.random() * by);

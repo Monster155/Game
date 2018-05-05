@@ -3,7 +3,7 @@ package ru.itlab.game.Utils;
 import com.badlogic.gdx.math.Vector2;
 
 public final class Constants {
-    public static final int PPM = 16;
+    public static final int PPM = 4;
     public static final float C_SPEED = 1500;
     public static final int SHOOT_RATE = 30; // выстрелов в минуту
     public static long SCORE = 0;
