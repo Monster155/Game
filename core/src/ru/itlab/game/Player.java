@@ -17,19 +17,20 @@ import static ru.itlab.game.Utils.Constants.SIZE;
 public class Player {
     public Fixture body;
     public Texture texture;
-    int lives = Constants.LIVES;
+    public int lives = Constants.LIVES;
     public Vector2 bulletRot;
+    String path = "PNG/blue";
 
     public Player(World world) {
         body = Utils.createBox(world, 500, 500, SIZE.x, SIZE.y,
                 false, "player", (short)1);
-        texture = new Texture("PNG/blue1.png");
+        texture = new Texture(path+"1.png");
     }
 
     public void render(SpriteBatch batch){
         batch.draw(texture,
-                body.getBody().getPosition().x,
-                body.getBody().getPosition().y,
+                body.getBody().getPosition().x - SIZE.x/2,
+                body.getBody().getPosition().y - SIZE.y/2,
                 SIZE.x,
                 SIZE.y);
     }
@@ -53,14 +54,15 @@ public class Player {
     }
 
     public void damaged(){
+        lives--;
         if(lives  > 6){ //Damage level 1
-
+            texture = new Texture(path+"1.png");
         } else if(lives > 3){ //Damage level 2
-
+            texture = new Texture(path+"2.png");
         } else if(lives > 0){ //Damage level 3
-
+            texture = new Texture(path+"3.png");
         } else{ //Game Over
-
+            Gdx.app.log("Game", "Game Over");
         }
     }
 

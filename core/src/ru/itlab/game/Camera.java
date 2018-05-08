@@ -14,7 +14,7 @@ public class Camera {
     public Camera(Player player){
         this.player = player;
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, Gdx.graphics.getWidth() * PPM, Gdx.graphics.getHeight() * PPM);
+        camera.setToOrtho(false, Gdx.graphics.getWidth() / PPM, Gdx.graphics.getHeight() / PPM);
     }
 
     public void update(float delta){

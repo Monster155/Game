@@ -7,7 +7,6 @@ import com.badlogic.gdx.audio.Music;
 
 public class MainActivity extends Game {
 
-	public boolean GameOver = false;
 	public GameScreen gs;
 	public GameOverScreen gos;
 	public MenuScreen ms;
@@ -31,9 +30,8 @@ public class MainActivity extends Game {
 		if(Gdx.input.isTouched() && getScreen()==ms) {
 			setScreen(gs);
 		}
-		if(GameOver){
+		if(gs.gameO){
 			setScreen(gos);
-			GameOver = false;
 		}
 	}
 

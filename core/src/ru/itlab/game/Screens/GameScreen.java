@@ -34,7 +34,9 @@ import ru.itlab.game.Player;
 import ru.itlab.game.Utils.Constants;
 import ru.itlab.game.Utils.TiledObjectUtil;
 
+import static ru.itlab.game.Utils.Constants.PPM;
 import static ru.itlab.game.Utils.Constants.SCORE;
+import static ru.itlab.game.Utils.Constants.SIZE;
 
 public class GameScreen implements Screen {
 
@@ -48,6 +50,7 @@ public class GameScreen implements Screen {
     OrthogonalTiledMapRenderer tmr;
     Box2DDebugRenderer b2dr;
     long reload = TimeUtils.nanoTime();
+    public boolean gameO = false;
 
     @Override
     public void show() {
@@ -67,6 +70,7 @@ public class GameScreen implements Screen {
                     for(Enemy enemy : enemies)
                         if(enemy.body == fa || enemy.body == fb)
                             enemy.damaged();
+                    SCORE++;
                 }
                 if((fa.getUserData().equals("world") && fb.getUserData().equals("bullet"))
                         || (fb.getUserData().equals("world") && fa.getUserData().equals("bullet"))){
@@ -83,9 +87,16 @@ public class GameScreen implements Screen {
                 if((fa.getUserData().equals("player") && fb.getUserData().equals("enemy"))
                         || (fb.getUserData().equals("player") && fa.getUserData().equals("enemy"))){
                     for(Enemy enemy : enemies)
-                        if(enemy.body == fa || enemy.body == fb)
+                        if(enemy.body == fa || enemy.body == fb) {
                             enemy.damaged();
+                            if(enemy.rot.x != 0 && enemy.rot.y != 0) {
+                                enemy.rot.x *= -1;
+                                enemy.rot.y *= -1;
+                            }
+                            enemy.change = TimeUtils.nanoTime();
+                        }
                     player.damaged();
+                    Gdx.app.log("I", "was damaged");
                 }
             }
             @Override
@@ -133,6 +144,8 @@ public class GameScreen implements Screen {
                 SCORE++;
             }
         }
+        if(enemies.size <= 0)Gdx.app.log("Game", "Game Over! Please press Esc");
+        if(player.lives <= 0)gameO = true;
         //Render
         Gdx.gl.glClearColor(0, 0, 0, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);

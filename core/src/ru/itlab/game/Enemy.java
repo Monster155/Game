@@ -21,11 +21,11 @@ public class Enemy {
     public Fixture body;
     Rectangle rect;
     Texture texture;
-    Vector2 rot = new Vector2(0,0);
+    public Vector2 rot = new Vector2(0,0);
     public boolean inGame = true;
     public int live = 9;
     String path;
-    long change = TimeUtils.nanoTime();
+    public long change = TimeUtils.nanoTime();
 
     public Enemy(World world, Vector2 pos, Rectangle rect){
         this.rect = rect;
@@ -41,7 +41,7 @@ public class Enemy {
     }
 
     public void update(float delta, Vector2 pos){
-        if(MathUtils.nanoToSec*(TimeUtils.nanoTime()-change) > 3) {
+        if(MathUtils.nanoToSec*(TimeUtils.nanoTime()-change) > (int)(Math.random()*3+2)) {
             calcRot(pos);
             change = TimeUtils.nanoTime();
         }
@@ -57,15 +57,15 @@ public class Enemy {
 
     public void render(SpriteBatch batch){
         batch.draw(texture,
-                body.getBody().getPosition().x,
-                body.getBody().getPosition().y,
+                body.getBody().getPosition().x - SIZE.x/2,
+                body.getBody().getPosition().y - SIZE.y/2,
                 SIZE.x,
                 SIZE.y);
     }
 
     public Vector2 rand(Vector2 pos){
         float x,y;
-        float ax = rect.x + 7*rect.width, bx = rect.width, ay = rect.y + 7*rect.height, by = rect.height;
+        float ax = 300, bx = 1000, ay = 300, by = 1000;
         do{
             x = ax + (float)(Math.random() * bx);
             y = ay + (float)(Math.random() * by);
@@ -76,17 +76,31 @@ public class Enemy {
 
     public void calcRot(Vector2 pos){
         float x = body.getBody().getPosition().x, y = body.getBody().getPosition().y;
-        if(x > pos.x)
+        if(x > pos.x+SIZE.x)
             rot.x = -1;
-        else if(x < pos.x)
+        else if(x < pos.x-SIZE.x)
             rot.x = 1;
         else rot.x = 0;
 
-        if(y > pos.y)
+        if(y > pos.y+SIZE.y)
             rot.y = -1;
-        else if(y < pos.y)
+        else if(y < pos.y-SIZE.y)
             rot.y = 1;
         else rot.y = 0;
+
+        if(rot.x == 0 && rot.y == 0){
+            if(x > pos.x)
+                rot.x = -1;
+            else if(x < pos.x)
+                rot.x = 1;
+            else rot.x = 0;
+
+            if(y > pos.y)
+                rot.y = -1;
+            else if(y < pos.y)
+                rot.y = 1;
+            else rot.y = 0;
+        }
     }
 
     public void damaged(){
