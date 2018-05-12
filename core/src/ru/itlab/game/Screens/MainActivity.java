@@ -26,9 +26,11 @@ public class MainActivity extends Game {
 		super.render();
 		if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE) && getScreen()==gs){
 			setScreen(ms);
+			gs.dispose();
 		}
 		if(Gdx.input.isTouched() && getScreen()==ms) {
 			setScreen(gs);
+			ms.dispose();
 		}
 		if(gs.gameO){
 			setScreen(gos);

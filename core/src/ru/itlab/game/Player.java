@@ -16,15 +16,19 @@ import static ru.itlab.game.Utils.Constants.SIZE;
 
 public class Player {
     public Fixture body;
-    public Texture texture;
+    public Texture texture, lifeTexture[];
     public int lives = Constants.LIVES;
     public Vector2 bulletRot;
-    String path = "PNG/blue";
+    String path = "PNG/blue", lifePath = "lifes/hudHeart_";
 
     public Player(World world) {
-        body = Utils.createBox(world, 500, 500, SIZE.x, SIZE.y,
+        body = Utils.createBox(world, 10, 10, SIZE.x, SIZE.y,
                 false, "player", (short)1);
         texture = new Texture(path+"1.png");
+        lifeTexture = new Texture[Constants.LIVES/2];
+        for(int i = 0; i < lifeTexture.length; i++){
+            lifeTexture[i] = new Texture(lifePath+"full.png");
+        }
     }
 
     public void render(SpriteBatch batch){
@@ -33,6 +37,10 @@ public class Player {
                 body.getBody().getPosition().y - SIZE.y/2,
                 SIZE.x,
                 SIZE.y);
+        for(int i = 0; i < lifeTexture.length; i++)
+        batch.draw(lifeTexture[i],
+                i*lifeTexture[i].getWidth(),
+                Gdx.graphics.getHeight()-lifeTexture[i].getHeight());
     }
 
     public void update(float delta){
@@ -55,9 +63,9 @@ public class Player {
 
     public void damaged(){
         lives--;
-        if(lives  > 6){ //Damage level 1
+        if(lives  > 4){ //Damage level 1
             texture = new Texture(path+"1.png");
-        } else if(lives > 3){ //Damage level 2
+        } else if(lives > 2){ //Damage level 2
             texture = new Texture(path+"2.png");
         } else if(lives > 0){ //Damage level 3
             texture = new Texture(path+"3.png");

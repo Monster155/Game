@@ -75,14 +75,15 @@ public class GameScreen implements Screen {
                 if((fa.getUserData().equals("world") && fb.getUserData().equals("bullet"))
                         || (fb.getUserData().equals("world") && fa.getUserData().equals("bullet"))){
                     for(Bullet bullet : bullets)
-                        if(bullet.body == fa || bullet.body == fb)
+                        if(bullet.body == fa || bullet.body == fb) {
                             bullet.inGame = false;
+                        }
                 }
                 if((fa.getUserData().equals("world") && fb.getUserData().equals("enemy"))
                         || (fb.getUserData().equals("world") && fa.getUserData().equals("enemy"))){
                     for(Enemy enemy : enemies)
-                        if(enemy.body == fa || enemy.body == fb)
-                            enemy.damaged();
+                        if (enemy.body == fa || enemy.body == fb)
+                            enemy.calcRot(player.body.getBody().getPosition());
                 }
                 if((fa.getUserData().equals("player") && fb.getUserData().equals("enemy"))
                         || (fb.getUserData().equals("player") && fa.getUserData().equals("enemy"))){
@@ -112,12 +113,12 @@ public class GameScreen implements Screen {
         camera = new Camera(player);
 
         map = new TmxMapLoader().load("Tiled/map.tmx");
-        tmr = new OrthogonalTiledMapRenderer(map);
+        tmr = new OrthogonalTiledMapRenderer(map, 5/PPM);
         TiledObjectUtil.parseTiledObjectLayer(world, map.getLayers().get("col").getObjects());
         batch = new SpriteBatch();
 
         for(int i = 0; i < 10; i++)
-            enemies.add(new Enemy(world, player.body.getBody().getPosition(), tmr.getViewBounds()));
+            enemies.add(new Enemy(world, player.body.getBody().getPosition()));
     }
 
     @Override
@@ -144,7 +145,7 @@ public class GameScreen implements Screen {
                 SCORE++;
             }
         }
-        if(enemies.size <= 0)Gdx.app.log("Game", "Game Over! Please press Esc");
+        if(enemies.size <= 0 || player.lives <= 0)Gdx.app.log("Game", "Game Over! Please press Esc");
         if(player.lives <= 0)gameO = true;
         //Render
         Gdx.gl.glClearColor(0, 0, 0, 1f);

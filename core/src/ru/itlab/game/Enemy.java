@@ -10,6 +10,8 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.TimeUtils;
 
+import java.util.Objects;
+
 import ru.itlab.game.Utils.Constants;
 import ru.itlab.game.Utils.Utils;
 
@@ -19,7 +21,6 @@ import static ru.itlab.game.Utils.Constants.SIZE;
 public class Enemy {
 
     public Fixture body;
-    Rectangle rect;
     Texture texture;
     public Vector2 rot = new Vector2(0,0);
     public boolean inGame = true;
@@ -27,11 +28,12 @@ public class Enemy {
     String path;
     public long change = TimeUtils.nanoTime();
 
-    public Enemy(World world, Vector2 pos, Rectangle rect){
-        this.rect = rect;
+    public Enemy(World world, Vector2 pos){
         body = Utils.createBox(world, rand(pos), SIZE.x, SIZE.y,
                 false, "enemy", (short) -1);
-        switch((int)Math.random()*4+1){
+        int abb = (int)(Math.random()*4+1);
+        Gdx.app.log("Random", abb+"");
+        switch(abb){
             case 1:path = "PNG/green";break;
             case 2:path = "PNG/pink";break;
             case 3:path = "PNG/sand";break;
@@ -65,12 +67,10 @@ public class Enemy {
 
     public Vector2 rand(Vector2 pos){
         float x,y;
-        float ax = 300, bx = 1000, ay = 300, by = 1000;
-        do{
-            x = ax + (float)(Math.random() * bx);
-            y = ay + (float)(Math.random() * by);
-        }while(x < pos.x + Gdx.graphics.getWidth()/2 && x > pos.x - Gdx.graphics.getWidth()/2
-                && y < pos.y + Gdx.graphics.getHeight()/2 && y > pos.y - Gdx.graphics.getHeight());
+        //Размеры смотреть в логах - самый первые строки, они описываны в TiledObjectUtil
+        float ax = 5, bx = 45, ay = 5, by = 45;
+        x = ax + (float)(Math.random() * (bx-ax));
+        y = ay + (float)(Math.random() * (by-ay));
         return new Vector2(x, y);
     }
 

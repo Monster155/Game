@@ -26,17 +26,12 @@ public class Bullet {
         this.rot = rot;
         body = Utils.createBox(world, check(pos), B_SIZE.x, B_SIZE.y,
                 false, "bullet", (short)0);
-        texture = new Texture("bullet.png");
+        texture = new Texture("bullets/bulletVer.png");
     }
 
     public void update(float delta){ // ", Vector2 pos" - убрал, т.к. нижняя часть в комментах
         //Ну update как update, думаю и так всё понятно
         body.getBody().setLinearVelocity(delta*B_SPEED*rot.x, delta*B_SPEED*rot.y);
-        /*if(body.getBody().getPosition().x > pos.x+C_VISION.x*1.5
-                || body.getBody().getPosition().y > pos.y+C_VISION.y*1.5
-                || body.getBody().getPosition().x < pos.x-C_VISION.x*1.5
-                || body.getBody().getPosition().y < pos.y-C_VISION.y*1.5)
-            inGame = false; Обработка также в Левел*/
         if(!inGame) Gdx.app.log("Bullet", "deleted");
     }
 
