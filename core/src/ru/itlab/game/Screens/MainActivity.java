@@ -32,8 +32,15 @@ public class MainActivity extends Game {
 			setScreen(gs);
 			ms.dispose();
 		}
+		if(Gdx.input.isTouched() && getScreen()==gos){
+			Gdx.app.log("MainActivity", "setScreen = ms");
+			setScreen(ms);
+			gos.dispose();
+		}
 		if(gs.gameO){
 			setScreen(gos);
+			gs.dispose();
+			gs.gameO = false;
 		}
 	}
 

@@ -12,4 +12,8 @@ public final class Constants {
     public static final int LIVES = 6; // Всегда должно быть чётным числом!!!
     public static final float E_SPEED = C_SPEED * 0.5f;
     public static final float B_SPEED = C_SPEED * 1.5f;
+    public static final float PM = PPM * 2;
+    public static boolean isAndroid = true;
+    public static Vector2 stick = new Vector2(0,0);
+    public static Vector2 gun = new Vector2(0,0);
 }

@@ -39,8 +39,9 @@ public class TiledObjectUtil {
 
         for(int i = 0; i < worldVertices.length; i++){
             //worldVertices[i] = new Vector2(vertices[i*2], vertices[i*2+1]);
-            worldVertices[i] = new Vector2(vertices[i*2] / Constants.PPM / 2, vertices[i*2+1] / Constants.PPM / 2);
-            Gdx.app.log("Координаты "+(i+1)+" вершины коллизии", "X: "+vertices[i*2] / Constants.PPM / 2+"; Y: "+vertices[i*2+1] / Constants.PPM / 2);
+            worldVertices[i] = new Vector2(vertices[i*2] / Constants.PM, vertices[i*2+1] / Constants.PM);
+            Gdx.app.log("Координаты "+(i+1)+" вершины коллизии", "X: "+vertices[i*2] / Constants.PM+
+                    "; Y: "+vertices[i*2+1] / Constants.PM);
         }
         ChainShape cs = new ChainShape();
         cs.createChain(worldVertices);

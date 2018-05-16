@@ -18,10 +18,12 @@ public class Bullet {
 
     Vector2 rot;
     public Fixture body;
+    World world;
     Texture texture;
     public boolean inGame = true;
 
     public Bullet(Vector2 rot, World world, Vector2 pos){
+        this.world = world;
         //Конструктор класса, вызывается при выстреле - создает пулю
         this.rot = rot;
         body = Utils.createBox(world, check(pos), B_SIZE.x, B_SIZE.y,
@@ -29,25 +31,31 @@ public class Bullet {
         texture = new Texture("bullets/bulletVer.png");
     }
 
-    public void update(float delta){ // ", Vector2 pos" - убрал, т.к. нижняя часть в комментах
+    public void update(float delta){
         //Ну update как update, думаю и так всё понятно
         body.getBody().setLinearVelocity(delta*B_SPEED*rot.x, delta*B_SPEED*rot.y);
-        if(!inGame) Gdx.app.log("Bullet", "deleted");
+        if(!inGame){
+            Gdx.app.log("Bullet", "deleted");
+            world.destroyBody(body.getBody());            ;
+            body = null;
+        }
     }
 
     public void render(SpriteBatch batch){
+        Gdx.app.log("Render", body.getBody().getPosition().x+" "+body.getBody().getPosition().y);
         //Ну render как render, думаю и так всё понятно
         batch.draw(texture,
-                body.getBody().getPosition().x-B_SIZE.x/2,
-                body.getBody().getPosition().y-B_SIZE.y/2,
+                body.getBody().getPosition().x,
+                body.getBody().getPosition().y,
                 B_SIZE.x,
                 B_SIZE.y);
     }
     public Vector2 check(Vector2 pos){
         //При генерации откуда будет вылетать пуля относительно игрока
         float x = pos.x + SIZE.x/2, y = pos.y + SIZE.y/2;
-        x += rot.x*SIZE.x;
-        y += rot.y*SIZE.y;
+        x += rot.x*SIZE.x/2;
+        y += rot.y*SIZE.y/2;
+        Gdx.app.log("Player position", "\nX: "+pos.x+"\nY: "+pos.y);
         Gdx.app.log("Position", "\nX: "+x+"\nY: "+y);
         return new Vector2(x, y);
     }

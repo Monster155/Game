@@ -21,6 +21,7 @@ import static ru.itlab.game.Utils.Constants.SIZE;
 public class Enemy {
 
     public Fixture body;
+    World world;
     Texture texture;
     public Vector2 rot = new Vector2(0,0);
     public boolean inGame = true;
@@ -29,6 +30,7 @@ public class Enemy {
     public long change = TimeUtils.nanoTime();
 
     public Enemy(World world, Vector2 pos){
+        this.world = world;
         body = Utils.createBox(world, rand(pos), SIZE.x, SIZE.y,
                 false, "enemy", (short) -1);
         int abb = (int)(Math.random()*4+1);
@@ -54,7 +56,11 @@ public class Enemy {
                 || body.getBody().getPosition().y < pos.y-C_VISION.y*1.5)
                 должна работать обработка в Левел
             inGame = false; */
-        if(!inGame) Gdx.app.log("Enemy", "deleted");
+        if(!inGame){
+            Gdx.app.log("Enemy", "deleted");
+            world.destroyBody(body.getBody());
+            body = null;
+        }
     }
 
     public void render(SpriteBatch batch){
@@ -68,7 +74,7 @@ public class Enemy {
     public Vector2 rand(Vector2 pos){
         float x,y;
         //Размеры смотреть в логах - самый первые строки, они описываны в TiledObjectUtil
-        float ax = 5, bx = 45, ay = 5, by = 45;
+        float ax = 25, bx = 75, ay = 25, by = 75;
         x = ax + (float)(Math.random() * (bx-ax));
         y = ay + (float)(Math.random() * (by-ay));
         return new Vector2(x, y);

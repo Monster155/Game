@@ -1,42 +1,35 @@
 package ru.itlab.game.Screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 
 import ru.itlab.game.Bullet;
 import ru.itlab.game.Camera;
 import ru.itlab.game.Enemy;
+import ru.itlab.game.Joystick;
 import ru.itlab.game.Player;
 import ru.itlab.game.Utils.Constants;
 import ru.itlab.game.Utils.TiledObjectUtil;
 
-import static ru.itlab.game.Utils.Constants.PPM;
+import static ru.itlab.game.Utils.Constants.PM;
 import static ru.itlab.game.Utils.Constants.SCORE;
-import static ru.itlab.game.Utils.Constants.SIZE;
 
 public class GameScreen implements Screen {
 
@@ -51,6 +44,8 @@ public class GameScreen implements Screen {
     Box2DDebugRenderer b2dr;
     long reload = TimeUtils.nanoTime();
     public boolean gameO = false;
+    Stage stage;
+    Joystick joystick;
 
     @Override
     public void show() {
@@ -112,24 +107,31 @@ public class GameScreen implements Screen {
         player = new Player(world);
         camera = new Camera(player);
 
-        map = new TmxMapLoader().load("Tiled/map.tmx");
-        tmr = new OrthogonalTiledMapRenderer(map, 5/PPM);
-        TiledObjectUtil.parseTiledObjectLayer(world, map.getLayers().get("col").getObjects());
+        map = new TmxMapLoader().load("GameMap/map100x100.tmx");
+        tmr = new OrthogonalTiledMapRenderer(map, 1f/PM);
+        TiledObjectUtil.parseTiledObjectLayer(world, map.getLayers().get("col").getObjects());// TODO 3
         batch = new SpriteBatch();
 
-        for(int i = 0; i < 10; i++)
-            enemies.add(new Enemy(world, player.body.getBody().getPosition()));
+        Gdx.app.log("SIZE", Gdx.graphics.getWidth()+" "+Gdx.graphics.getHeight());
+
+        stage = new Stage();
+        joystick = new Joystick(stage.getCamera());
+        stage.addActor(joystick);
+
+        //for(int i = 0; i < 10; i++) TODO 2
+            //enemies.add(new Enemy(world, player.body.getBody().getPosition()));
     }
 
     @Override
     public void render(float delta) {
         //Update
         world.step(1 / 60f, 6, 2);
+        stage.act(delta);
         player.update(delta);
         camera.update(delta);
         tmr.setView(camera.camera);
         if((player.bulletRot.x != 0 || player.bulletRot.y != 0)
-                && MathUtils.nanoToSec*(TimeUtils.nanoTime()-reload) >= 60/ Constants.SHOOT_RATE){
+                && MathUtils.nanoToSec*(TimeUtils.nanoTime()-reload) >= 60 / Constants.SHOOT_RATE){
             reload = TimeUtils.nanoTime();
             bullets.add(new Bullet(player.bulletRot, world, player.body.getBody().getPosition()));
         }
@@ -143,10 +145,13 @@ public class GameScreen implements Screen {
             if(!enemy.inGame) {
                 enemies.removeValue(enemy, false);
                 SCORE++;
+                Gdx.app.log("SCORE", SCORE+"");
             }
         }
-        if(enemies.size <= 0 || player.lives <= 0)Gdx.app.log("Game", "Game Over! Please press Esc");
-        if(player.lives <= 0)gameO = true;
+        if(enemies.size <= 0 || player.lives <= 0) {
+            //TODO 1
+            //gameO = true;
+        }
         //Render
         Gdx.gl.glClearColor(0, 0, 0, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -160,6 +165,7 @@ public class GameScreen implements Screen {
         for(Enemy enemy : enemies)
             enemy.render(batch);
         batch.end();
+        stage.draw();
     }
 
     @Override
@@ -175,6 +181,7 @@ public class GameScreen implements Screen {
         tmr.dispose();
         map.dispose();
         batch.dispose();
+        joystick.dispose();
     }
 
     @Override
