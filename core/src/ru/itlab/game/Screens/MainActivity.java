@@ -4,6 +4,10 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.utils.TimeUtils;
+
+import ru.itlab.game.Utils.Constants;
 
 public class MainActivity extends Game {
 
@@ -11,6 +15,7 @@ public class MainActivity extends Game {
 	public GameOverScreen gos;
 	public MenuScreen ms;
 	Music music;
+	long time = TimeUtils.nanoTime();
 	String mainMusic = "party.mp3", GOMusic = "";
 
 	@Override
@@ -32,13 +37,16 @@ public class MainActivity extends Game {
 			setScreen(gs);
 			ms.dispose();
 		}
-		if(Gdx.input.isTouched() && getScreen()==gos){
+		if(Gdx.input.isTouched() && getScreen()==gos
+				&& MathUtils.nanoToSec*(TimeUtils.nanoTime()-time) > 3){
 			Gdx.app.log("MainActivity", "setScreen = ms");
 			setScreen(ms);
 			gos.dispose();
 		}
 		if(gs.gameO){
 			setScreen(gos);
+			Gdx.app.log("MainActivity", "Changing for GOS");
+			time = TimeUtils.nanoTime();
 			gs.dispose();
 			gs.gameO = false;
 		}

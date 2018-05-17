@@ -3,6 +3,7 @@ package ru.itlab.game.Screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -28,8 +29,10 @@ import ru.itlab.game.Player;
 import ru.itlab.game.Utils.Constants;
 import ru.itlab.game.Utils.TiledObjectUtil;
 
+import static ru.itlab.game.Utils.Constants.LIVES;
 import static ru.itlab.game.Utils.Constants.PM;
 import static ru.itlab.game.Utils.Constants.SCORE;
+import static ru.itlab.game.Utils.Constants.SHOOT_RATE;
 
 public class GameScreen implements Screen {
 
@@ -42,13 +45,15 @@ public class GameScreen implements Screen {
     TiledMap map;
     OrthogonalTiledMapRenderer tmr;
     Box2DDebugRenderer b2dr;
-    long reload = TimeUtils.nanoTime();
+    double reload = TimeUtils.nanoTime();
     public boolean gameO = false;
     Stage stage;
     Joystick joystick;
 
     @Override
     public void show() {
+        Gdx.gl.glClearColor(0, 0, 0, 1f);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         world = new World(new Vector2(0,0), false);
         world.setContactListener(new ContactListener() {
             @Override
@@ -109,7 +114,7 @@ public class GameScreen implements Screen {
 
         map = new TmxMapLoader().load("GameMap/map100x100.tmx");
         tmr = new OrthogonalTiledMapRenderer(map, 1f/PM);
-        TiledObjectUtil.parseTiledObjectLayer(world, map.getLayers().get("col").getObjects());// TODO 3
+        TiledObjectUtil.parseTiledObjectLayer(world, map.getLayers().get("col").getObjects());
         batch = new SpriteBatch();
 
         Gdx.app.log("SIZE", Gdx.graphics.getWidth()+" "+Gdx.graphics.getHeight());
@@ -118,8 +123,11 @@ public class GameScreen implements Screen {
         joystick = new Joystick(stage.getCamera());
         stage.addActor(joystick);
 
-        //for(int i = 0; i < 10; i++) TODO 2
-            //enemies.add(new Enemy(world, player.body.getBody().getPosition()));
+        for(int i = 0; i < 10; i++) //TODO 2
+            enemies.add(new Enemy(world, player.body.getBody().getPosition()));
+
+        SCORE = 0;
+        LIVES = 10;
     }
 
     @Override
@@ -131,7 +139,7 @@ public class GameScreen implements Screen {
         camera.update(delta);
         tmr.setView(camera.camera);
         if((player.bulletRot.x != 0 || player.bulletRot.y != 0)
-                && MathUtils.nanoToSec*(TimeUtils.nanoTime()-reload) >= 60 / Constants.SHOOT_RATE){
+                && MathUtils.nanoToSec*(TimeUtils.nanoTime()-reload)*SHOOT_RATE >= 1){
             reload = TimeUtils.nanoTime();
             bullets.add(new Bullet(player.bulletRot, world, player.body.getBody().getPosition()));
         }
@@ -148,10 +156,8 @@ public class GameScreen implements Screen {
                 Gdx.app.log("SCORE", SCORE+"");
             }
         }
-        if(enemies.size <= 0 || player.lives <= 0) {
-            //TODO 1
-            //gameO = true;
-        }
+        if(enemies.size <= 0 || LIVES <= 0)
+            gameO = true;
         //Render
         Gdx.gl.glClearColor(0, 0, 0, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -175,7 +181,10 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
+        Gdx.gl.glClearColor(1, 1, 1, 1f);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         world.dispose();
+        stage.dispose();
         b2dr.dispose();
         player.texture.dispose();
         tmr.dispose();

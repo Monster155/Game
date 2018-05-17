@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -16,6 +17,8 @@ public class Joystick extends Actor {
     Camera camera;
     Vector3 touchPos, touchPos2;
     Vector2 ciSize, cuSize;
+
+    BitmapFont font;
 
     private Texture circleTex, cursorTex;
     private Sprite circleSp, cursorSp;
@@ -35,6 +38,8 @@ public class Joystick extends Actor {
 
         ciSize = new Vector2(circleTex.getWidth(), circleTex.getHeight());
         cuSize = new Vector2(cursorTex.getWidth(), cursorTex.getHeight());
+
+        font = new BitmapFont(Gdx.files.internal("data/text.fnt"));
     }
 
     @Override
@@ -99,6 +104,7 @@ public class Joystick extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         batch.setProjectionMatrix(camera.combined);
+        font.draw(batch, "Your lives: "+Constants.LIVES, 0, Gdx.graphics.getHeight());
         batch.draw(circleSp, 0, 0);
         batch.draw(cursorSp, touchPos.x-cuSize.x/2, touchPos.y-cuSize.y/2);
         batch.draw(circleSp, Gdx.graphics.getWidth()-ciSize.x, 0);

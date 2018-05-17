@@ -25,7 +25,7 @@ public class Enemy {
     Texture texture;
     public Vector2 rot = new Vector2(0,0);
     public boolean inGame = true;
-    public int live = 9;
+    public int live = 5;
     String path;
     public long change = TimeUtils.nanoTime();
 
@@ -50,12 +50,6 @@ public class Enemy {
             change = TimeUtils.nanoTime();
         }
         body.getBody().setLinearVelocity(delta*E_SPEED*rot.x, delta*E_SPEED*rot.y);
-        /*if(body.getBody().getPosition().x > pos.x+C_VISION.x*1.5
-                || body.getBody().getPosition().y > pos.y+C_VISION.y*1.5
-                || body.getBody().getPosition().x < pos.x-C_VISION.x*1.5
-                || body.getBody().getPosition().y < pos.y-C_VISION.y*1.5)
-                должна работать обработка в Левел
-            inGame = false; */
         if(!inGame){
             Gdx.app.log("Enemy", "deleted");
             world.destroyBody(body.getBody());

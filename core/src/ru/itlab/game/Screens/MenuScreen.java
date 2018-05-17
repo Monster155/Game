@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import ru.itlab.game.Utils.Constants;
+
 public class MenuScreen implements Screen {
 
     Texture texture;
@@ -18,6 +20,8 @@ public class MenuScreen implements Screen {
         texture = new Texture("masterpiece.png");
         scale = Gdx.graphics.getHeight() * texture.getWidth() / texture.getHeight();
         drawX = (scale - Gdx.graphics.getWidth()) / 2 * -1;
+        Constants.DrawX = drawX;
+        Constants.Scale = scale;
     }
 
     @Override
