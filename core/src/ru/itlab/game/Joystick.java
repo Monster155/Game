@@ -18,6 +18,8 @@ public class Joystick extends Actor {
     Vector3 touchPos, touchPos2;
     Vector2 ciSize, cuSize;
 
+    int scale;
+
     BitmapFont font;
 
     private Texture circleTex, cursorTex;
@@ -32,19 +34,21 @@ public class Joystick extends Actor {
         circleSp = new Sprite(circleTex);
         cursorSp = new Sprite(cursorTex);
 
-        touchPos = new Vector3(circleTex.getWidth()/2, circleTex.getHeight()/2, 0);
-        touchPos2 = new Vector3(Gdx.graphics.getWidth()-circleTex.getWidth()/2,
-                Gdx.graphics.getHeight()-circleTex.getHeight()/2, 0);
+        scale = Gdx.graphics.getHeight()/2;
 
-        ciSize = new Vector2(circleTex.getWidth(), circleTex.getHeight());
-        cuSize = new Vector2(cursorTex.getWidth(), cursorTex.getHeight());
+        touchPos = new Vector3(circleTex.getWidth()*scale/2, circleTex.getHeight()*scale/2, 0);
+        touchPos2 = new Vector3(Gdx.graphics.getWidth()-circleTex.getWidth()*scale/2,
+                Gdx.graphics.getHeight()-circleTex.getHeight()*scale/2, 0);
+
+        ciSize = new Vector2(circleTex.getWidth()*scale, circleTex.getHeight()*scale);
+        cuSize = new Vector2(cursorTex.getWidth()*scale, cursorTex.getHeight()*scale);
 
         font = new BitmapFont(Gdx.files.internal("data/text.fnt"));
     }
 
     @Override
     public void act(float delta) {
-        touchPos = new Vector3(ciSize.x/2, ciSize.y/2, 0);
+        touchPos = new Vector3(ciSize.x/2*scale, ciSize.y/2*scale, 0);
         Constants.stick = new Vector2(0,0);
         touchPos2 = new Vector3(Gdx.graphics.getWidth()-circleTex.getWidth()/2,ciSize.y/2,0);
         Constants.gun = new Vector2(0,0);
@@ -105,10 +109,10 @@ public class Joystick extends Actor {
     public void draw(Batch batch, float parentAlpha) {
         batch.setProjectionMatrix(camera.combined);
         font.draw(batch, "Your lives: "+Constants.LIVES, 0, Gdx.graphics.getHeight());
-        batch.draw(circleSp, 0, 0);
-        batch.draw(cursorSp, touchPos.x-cuSize.x/2, touchPos.y-cuSize.y/2);
-        batch.draw(circleSp, Gdx.graphics.getWidth()-ciSize.x, 0);
-        batch.draw(cursorSp, touchPos2.x-cuSize.x/2, touchPos2.y-cuSize.y/2);
+        batch.draw(circleSp, 0, 0, scale, scale);
+        batch.draw(cursorSp, touchPos.x-cuSize.x/2, touchPos.y-cuSize.y/2, scale, scale);
+        batch.draw(circleSp, Gdx.graphics.getWidth()-ciSize.x, 0, scale, scale);
+        batch.draw(cursorSp, touchPos2.x-cuSize.x/2, touchPos2.y-cuSize.y/2, scale, scale);
     }
 
     public void dispose() {

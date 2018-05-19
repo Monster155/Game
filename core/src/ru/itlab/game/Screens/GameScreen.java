@@ -151,11 +151,12 @@ public class GameScreen implements Screen {
         for(Enemy enemy : enemies){
             enemy.update(delta, player.body.getBody().getPosition());
             if(!enemy.inGame) {
-                enemies.removeValue(enemy, false);
+                enemies.removeValue(enemy, true);
                 SCORE++;
                 Gdx.app.log("SCORE", SCORE+"");
             }
         }
+        Gdx.app.log("E size", enemies.size+"");
         if(enemies.size <= 0 || LIVES <= 0)
             gameO = true;
         //Render
@@ -191,6 +192,8 @@ public class GameScreen implements Screen {
         map.dispose();
         batch.dispose();
         joystick.dispose();
+        enemies.clear();
+        bullets.clear();
     }
 
     @Override

@@ -38,9 +38,9 @@ public class GameOverScreen implements Screen {
                 0,
                 Constants.Scale,
                 Gdx.graphics.getHeight());
-        font.draw(batch, "Your score: "+SCORE, Gdx.graphics.getWidth()/4, Gdx.graphics.getHeight()/4);
+        font.draw(batch, "Your score: "+SCORE, Gdx.graphics.getWidth()/4, 200);
         if(LIVES > 0)
-            font.draw(batch, "There is no enemy! Tap to screen", Gdx.graphics.getWidth()/4, 100);
+            font.draw(batch, "There is no enemy! Tap to screen", 0, 100);
         else
             font.draw(batch, "You dead! Tap to screen", Gdx.graphics.getWidth()/6, 100);
         batch.end();

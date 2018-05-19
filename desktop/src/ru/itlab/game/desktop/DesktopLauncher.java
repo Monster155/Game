@@ -8,8 +8,8 @@ import ru.itlab.game.Utils.Constants;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		//config.width = 16*50;
-		//config.height = 9*50;
+		config.width = 1280;
+		config.height = 720;
 		//config.fullscreen = true;
 		new LwjglApplication(new MainActivity(), config);
 		Constants.isAndroid = false;
