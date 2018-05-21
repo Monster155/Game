@@ -1,4 +1,4 @@
-package ru.itlab.game;
+package ru.itlab.game.Characters;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;

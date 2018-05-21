@@ -3,7 +3,6 @@ package ru.itlab.game.Screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -21,12 +20,11 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 
-import ru.itlab.game.Bullet;
-import ru.itlab.game.Camera;
-import ru.itlab.game.Enemy;
-import ru.itlab.game.Joystick;
-import ru.itlab.game.Player;
-import ru.itlab.game.Utils.Constants;
+import ru.itlab.game.Characters.Bullet;
+import ru.itlab.game.SpecialClasses.Camera;
+import ru.itlab.game.Characters.Enemy;
+import ru.itlab.game.SpecialClasses.Joystick;
+import ru.itlab.game.Characters.Player;
 import ru.itlab.game.Utils.TiledObjectUtil;
 
 import static ru.itlab.game.Utils.Constants.LIVES;
