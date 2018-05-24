@@ -28,6 +28,7 @@ import ru.itlab.game.Characters.Player;
 import ru.itlab.game.Utils.TiledObjectUtil;
 
 import static ru.itlab.game.Utils.Constants.LIVES;
+import static ru.itlab.game.Utils.Constants.MAXLIVES;
 import static ru.itlab.game.Utils.Constants.PM;
 import static ru.itlab.game.Utils.Constants.SCORE;
 import static ru.itlab.game.Utils.Constants.SHOOT_RATE;
@@ -125,7 +126,7 @@ public class GameScreen implements Screen {
             enemies.add(new Enemy(world, player.body.getBody().getPosition()));
 
         SCORE = 0;
-        LIVES = 10;
+        LIVES = MAXLIVES;
     }
 
     @Override

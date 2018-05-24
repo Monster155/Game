@@ -27,7 +27,7 @@ public class Bullet {
         //Конструктор класса, вызывается при выстреле - создает пулю
         this.rot = rot;
         body = Utils.createBox(world, check(pos), B_SIZE.x, B_SIZE.y,
-                false, "bullet", (short)0);
+                false, "bullet", (short)-2);
         texture = new Texture("bullets/bulletVer.png");
     }
 
@@ -52,11 +52,12 @@ public class Bullet {
     }
     public Vector2 check(Vector2 pos){
         //При генерации откуда будет вылетать пуля относительно игрока
-        float x = pos.x + SIZE.x/2, y = pos.y + SIZE.y/2;
+        /*float x = pos.x + SIZE.x/2, y = pos.y + SIZE.y/2;
         x += rot.x*SIZE.x/2;
         y += rot.y*SIZE.y/2;
         Gdx.app.log("Player position", "\nX: "+pos.x+"\nY: "+pos.y);
         Gdx.app.log("Position", "\nX: "+x+"\nY: "+y);
-        return new Vector2(x, y);
+        return new Vector2(x, y);*/
+        return new Vector2(pos.x+SIZE.x/2f-B_SIZE.x/2f, pos.y+SIZE.y/2f-B_SIZE.y/2f);
     }
 }

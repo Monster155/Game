@@ -14,24 +14,21 @@ import ru.itlab.game.Utils.Utils;
 
 import static ru.itlab.game.Utils.Constants.C_SPEED;
 import static ru.itlab.game.Utils.Constants.LIVES;
+import static ru.itlab.game.Utils.Constants.MAXLIVES;
 import static ru.itlab.game.Utils.Constants.SIZE;
 import static ru.itlab.game.Utils.Constants.isAndroid;
 
 public class Player {
     public Fixture body;
-    public Texture texture, lifeTexture[];
+    public Texture texture;
     public Vector2 bulletRot;
-    String path = "PNG/blue", lifePath = "lifes/hudHeart_";
+    String path = "PNG/blue";
 
 
     public Player(World world) {
         body = Utils.createBox(world, 50, 50, SIZE.x, SIZE.y,
-                false, "player", (short)1);
+                false, "player", (short)-2);
         texture = new Texture(path+"1.png");
-        lifeTexture = new Texture[LIVES/2];
-        for(int i = 0; i < lifeTexture.length; i++){
-            lifeTexture[i] = new Texture(lifePath+"full.png");
-        }
     }
 
     public void render(SpriteBatch batch){
@@ -40,13 +37,6 @@ public class Player {
                 body.getBody().getPosition().y - SIZE.y/2,
                 SIZE.x,
                 SIZE.y);
-        for(int i = 0; i < lifeTexture.length; i++) {
-            batch.draw(lifeTexture[i],
-                    body.getBody().getPosition().x + i * lifeTexture[i].getWidth(),
-                    body.getBody().getPosition().y + Gdx.graphics.getHeight() - lifeTexture[i].getHeight(),
-                    SIZE.x, SIZE.y);
-            //Gdx.app.log("LIVES", "draw "+i);
-        }
     }
 
     public void update(float delta){
@@ -65,9 +55,9 @@ public class Player {
 
     public void damaged(){
         LIVES--;
-        if(LIVES  > 4){ //Damage level 1
+        if(LIVES  > MAXLIVES*3f/4f){ //Damage level 1
             texture = new Texture(path+"1.png");
-        } else if(LIVES > 2){ //Damage level 2
+        } else if(LIVES > MAXLIVES/2f){ //Damage level 2
             texture = new Texture(path+"2.png");
         } else if(LIVES > 0){ //Damage level 3
             texture = new Texture(path+"3.png");

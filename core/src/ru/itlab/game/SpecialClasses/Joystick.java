@@ -12,6 +12,10 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 
 import ru.itlab.game.Utils.Constants;
 
+import static ru.itlab.game.Utils.Constants.LIVES;
+import static ru.itlab.game.Utils.Constants.MAXLIVES;
+import static ru.itlab.game.Utils.Constants.SIZE;
+
 public class Joystick extends Actor {
 
     Camera camera;
@@ -20,9 +24,8 @@ public class Joystick extends Actor {
 
     float scale;
 
-    BitmapFont font;
-
-    private Texture circleTex, cursorTex;
+    String lifePath = "lifes/hudHeart_";
+    private Texture circleTex, cursorTex, lifeTexture[];
     private Sprite circleSp, cursorSp;
 
     public Joystick(Camera camera) {
@@ -42,7 +45,10 @@ public class Joystick extends Actor {
         ciSize = new Vector2(scale, scale);
         cuSize = new Vector2(scale/(circleTex.getWidth()/cursorTex.getWidth()), scale/(circleTex.getHeight()/cursorTex.getHeight()));
 
-        font = new BitmapFont(Gdx.files.internal("data/text.fnt"));
+        lifeTexture = new Texture[MAXLIVES/2];
+        for(int i = 0; i < lifeTexture.length; i++){
+            lifeTexture[i] = new Texture(lifePath+"full.png");
+        }
     }
 
     @Override
@@ -102,20 +108,42 @@ public class Joystick extends Actor {
                 }
             }
         }
+
+        hearts();
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
         batch.setProjectionMatrix(camera.combined);
-        font.draw(batch, "Your lives: "+Constants.LIVES, 0, Gdx.graphics.getHeight());
         batch.draw(circleSp, 0, 0, ciSize.x, ciSize.y);
         batch.draw(cursorSp, touchPos.x-cuSize.x/2, touchPos.y-cuSize.y/2, cuSize.x, cuSize.y);
         batch.draw(circleSp, Gdx.graphics.getWidth()-ciSize.x, 0, ciSize.x, ciSize.y);
         batch.draw(cursorSp, touchPos2.x-cuSize.x/2, touchPos2.y-cuSize.y/2, cuSize.x, cuSize.y);
+        for(int i = 0; i < lifeTexture.length; i++) {
+            batch.draw(lifeTexture[i],
+                    i*lifeTexture[i].getWidth(),
+                    Gdx.graphics.getHeight()-lifeTexture[i].getHeight());
+            Gdx.app.log("LIVES", "draw "+i);
+        }
     }
 
     public void dispose() {
         circleTex.dispose();
         cursorTex.dispose();
+    }
+
+    public void hearts(){
+        if(LIVES % 2 == 0){
+            for(int i = 0; i < LIVES/2; i++)
+                lifeTexture[i] = new Texture(lifePath+"full.png");
+            for(int i = LIVES/2; i < MAXLIVES/2; i++)
+                lifeTexture[i] = new Texture(lifePath+"empty.png");
+        } else {
+            for(int i = 0; i < LIVES/2; i++)
+                lifeTexture[i] = new Texture(lifePath+"full.png");
+            lifeTexture[LIVES/2] = new Texture(lifePath+"half.png");
+            for(int i = LIVES/2+1; i < MAXLIVES/2; i++)
+                lifeTexture[i] = new Texture(lifePath+"empty.png");
+        }
     }
 }

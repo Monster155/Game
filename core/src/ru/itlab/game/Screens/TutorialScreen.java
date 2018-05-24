@@ -19,7 +19,7 @@ public class TutorialScreen implements Screen {
     @Override
     public void show() {
         batch = new SpriteBatch();
-        texture = new Texture("levelUp.png");
+        texture = new Texture("tutorial.png");
     }
 
     @Override
