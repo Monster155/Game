@@ -18,6 +18,7 @@ public class MainActivity extends Game {
     public TutorialScreen ts;
     Music music;
     long time = TimeUtils.nanoTime();
+    long tutor = TimeUtils.nanoTime();
     String mainMusic = "party.mp3", GOMusic = "";
     Preferences prefs;
 
@@ -41,18 +42,21 @@ public class MainActivity extends Game {
         if (Gdx.input.isTouched() && getScreen() == ms) {
             if (prefs.getBoolean("tutorial", false))
                 setScreen(gs);
-            else
+            else {
                 setScreen(ts);
+                tutor = TimeUtils.nanoTime();
+            }
             ms.dispose();
         }
-        if(Gdx.input.isTouched() && getScreen() == ts){
+        if(Gdx.input.isTouched() && getScreen() == ts
+                && MathUtils.nanoToSec * (TimeUtils.nanoTime() - tutor) > 3){
             prefs.putBoolean("tutorial", true);
             prefs.flush(); //сохранение
             ts.dispose();
             setScreen(gs);
         }
         if (Gdx.input.isTouched() && getScreen() == gos
-                && MathUtils.nanoToSec * (TimeUtils.nanoTime() - time) > 3) {
+                && MathUtils.nanoToSec * (TimeUtils.nanoTime() - time) > 1) {
             Gdx.app.log("MainActivity", "setScreen = ms");
             setScreen(ms);
             gos.dispose();

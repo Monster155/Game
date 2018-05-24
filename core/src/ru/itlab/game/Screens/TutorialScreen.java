@@ -6,20 +6,22 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.sun.org.apache.xerces.internal.util.TeeXMLDocumentFilterImpl;
 
 import ru.itlab.game.Utils.Constants;
 
 public class TutorialScreen implements Screen {
 
-    Preferences prefs = Gdx.app.getPreferences("Preferences");
     SpriteBatch batch;
     Texture texture;
+    float scale;//отношение Х к У
 
     @Override
     public void show() {
         batch = new SpriteBatch();
         texture = new Texture("tutorial.png");
+        scale = (texture.getWidth()*Gdx.graphics.getHeight())/texture.getHeight();
     }
 
     @Override
@@ -28,9 +30,9 @@ public class TutorialScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
         batch.draw(texture,
-                Constants.DrawX,
+                Gdx.graphics.getWidth()/2f-scale/2f,
                 0,
-                Constants.Scale,
+                scale,
                 Gdx.graphics.getHeight());
         batch.end();
     }
