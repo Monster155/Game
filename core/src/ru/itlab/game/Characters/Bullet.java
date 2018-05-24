@@ -45,19 +45,20 @@ public class Bullet {
         Gdx.app.log("Render", body.getBody().getPosition().x+" "+body.getBody().getPosition().y);
         //Ну render как render, думаю и так всё понятно
         batch.draw(texture,
-                body.getBody().getPosition().x,
-                body.getBody().getPosition().y,
+                body.getBody().getPosition().x - B_SIZE.x/2,
+                body.getBody().getPosition().y - B_SIZE.y/2,
                 B_SIZE.x,
                 B_SIZE.y);
     }
     public Vector2 check(Vector2 pos){
         //При генерации откуда будет вылетать пуля относительно игрока
-        /*float x = pos.x + SIZE.x/2, y = pos.y + SIZE.y/2;
-        x += rot.x*SIZE.x/2;
-        y += rot.y*SIZE.y/2;
-        Gdx.app.log("Player position", "\nX: "+pos.x+"\nY: "+pos.y);
-        Gdx.app.log("Position", "\nX: "+x+"\nY: "+y);
-        return new Vector2(x, y);*/
         return new Vector2(pos.x+SIZE.x/2f-B_SIZE.x/2f, pos.y+SIZE.y/2f-B_SIZE.y/2f);
+    }
+
+
+
+
+    public void dispose(){
+
     }
 }

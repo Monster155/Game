@@ -113,4 +113,11 @@ public class Enemy {
             texture = new Texture(path+"3.png");
         else inGame = false;
     }
+
+
+
+
+    public void dispose(){
+        texture.dispose();
+    }
 }

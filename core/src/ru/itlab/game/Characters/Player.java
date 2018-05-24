@@ -83,4 +83,11 @@ public class Player {
         else
             body.getBody().setLinearVelocity(delta*C_SPEED*x, delta*C_SPEED*y);
     }
+
+
+
+
+    public void dispose(){
+        texture.dispose();
+    }
 }

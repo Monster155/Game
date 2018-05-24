@@ -40,8 +40,9 @@ public class MainActivity extends Game {
             gs.dispose();
         }
         if (Gdx.input.isTouched() && getScreen() == ms) {
-            if (prefs.getBoolean("tutorial", false))
+            if (prefs.getBoolean("tutorial", false)) {
                 setScreen(gs);
+            }
             else {
                 setScreen(ts);
                 tutor = TimeUtils.nanoTime();
@@ -52,8 +53,8 @@ public class MainActivity extends Game {
                 && MathUtils.nanoToSec * (TimeUtils.nanoTime() - tutor) > 3){
             prefs.putBoolean("tutorial", true);
             prefs.flush(); //сохранение
-            ts.dispose();
             setScreen(gs);
+            ts.dispose();
         }
         if (Gdx.input.isTouched() && getScreen() == gos
                 && MathUtils.nanoToSec * (TimeUtils.nanoTime() - time) > 1) {
@@ -63,9 +64,8 @@ public class MainActivity extends Game {
         }
         if (gs.gameO) {
             setScreen(gos);
-            Gdx.app.log("MainActivity", "Changing for GOS");
-            time = TimeUtils.nanoTime();
             gs.dispose();
+            time = TimeUtils.nanoTime();
             gs.gameO = false;
         }
     }

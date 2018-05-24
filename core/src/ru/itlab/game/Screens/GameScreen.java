@@ -144,30 +144,37 @@ public class GameScreen implements Screen {
         }
         for(Bullet bullet : bullets){
             bullet.update(delta);
-            if(!bullet.inGame)
+            if(!bullet.inGame) {
+                bullet.dispose();
                 bullets.removeValue(bullet, false);
+            }
         }
         for(Enemy enemy : enemies){
             enemy.update(delta, player.body.getBody().getPosition());
             if(!enemy.inGame) {
+                enemy.dispose();
                 enemies.removeValue(enemy, true);
                 SCORE++;
                 Gdx.app.log("SCORE", SCORE+"");
             }
         }
         Gdx.app.log("E size", enemies.size+"");
+        Gdx.app.log("B size", bullets.size+"");
         if(enemies.size <= 0 || LIVES <= 0)
             gameO = true;
         //Render
-        Gdx.gl.glClearColor(0, 0, 0, 1f);
+        Gdx.gl.glClearColor(94,63,107, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        Gdx.app.log("Check", "cheeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeck");
         batch.setProjectionMatrix(camera.camera.combined);
         b2dr.render(world, camera.camera.combined);
         tmr.render();
         batch.begin();
         player.render(batch);
-        for(Bullet bullet : bullets)
+        for(Bullet bullet : bullets) {
             bullet.render(batch);
+            Gdx.app.log("Bulletssssssssssssss", "checkedddd");
+        }
         for(Enemy enemy : enemies)
             enemy.render(batch);
         batch.end();
@@ -181,12 +188,12 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-        Gdx.gl.glClearColor(1, 1, 1, 1f);
+        Gdx.gl.glClearColor(94,63,107, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         world.dispose();
         stage.dispose();
         b2dr.dispose();
-        player.texture.dispose();
+        player.dispose();
         tmr.dispose();
         map.dispose();
         batch.dispose();

@@ -130,6 +130,8 @@ public class Joystick extends Actor {
     public void dispose() {
         circleTex.dispose();
         cursorTex.dispose();
+        for(int i = 0; i < lifeTexture.length; i++)
+            lifeTexture[i].dispose();
     }
 
     public void hearts(){

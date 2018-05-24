@@ -26,7 +26,7 @@ public class TutorialScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0, 0, 1, 1f);
+        Gdx.gl.glClearColor(94,63,107, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
         batch.draw(texture,
