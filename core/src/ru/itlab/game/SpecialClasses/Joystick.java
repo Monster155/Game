@@ -123,15 +123,7 @@ public class Joystick extends Actor {
             batch.draw(lifeTexture[i],
                     i*lifeTexture[i].getWidth(),
                     Gdx.graphics.getHeight()-lifeTexture[i].getHeight());
-            Gdx.app.log("LIVES", "draw "+i);
         }
-    }
-
-    public void dispose() {
-        circleTex.dispose();
-        cursorTex.dispose();
-        for(int i = 0; i < lifeTexture.length; i++)
-            lifeTexture[i].dispose();
     }
 
     public void hearts(){
@@ -147,5 +139,13 @@ public class Joystick extends Actor {
             for(int i = LIVES/2+1; i < MAXLIVES/2; i++)
                 lifeTexture[i] = new Texture(lifePath+"empty.png");
         }
+    }
+
+
+    public void dispose() {
+        circleTex.dispose();
+        cursorTex.dispose();
+        for(int i = 0; i < lifeTexture.length; i++)
+            lifeTexture[i].dispose();
     }
 }

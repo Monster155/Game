@@ -36,13 +36,13 @@ public class Bullet {
         body.getBody().setLinearVelocity(delta*B_SPEED*rot.x, delta*B_SPEED*rot.y);
         if(!inGame){
             Gdx.app.log("Bullet", "deleted");
-            world.destroyBody(body.getBody());            ;
+            world.destroyBody(body.getBody());
             body = null;
+            texture.dispose();
         }
     }
 
     public void render(SpriteBatch batch){
-        Gdx.app.log("Render", body.getBody().getPosition().x+" "+body.getBody().getPosition().y);
         //Ну render как render, думаю и так всё понятно
         batch.draw(texture,
                 body.getBody().getPosition().x - B_SIZE.x/2,
@@ -53,12 +53,5 @@ public class Bullet {
     public Vector2 check(Vector2 pos){
         //При генерации откуда будет вылетать пуля относительно игрока
         return new Vector2(pos.x+SIZE.x/2f-B_SIZE.x/2f, pos.y+SIZE.y/2f-B_SIZE.y/2f);
-    }
-
-
-
-
-    public void dispose(){
-
     }
 }

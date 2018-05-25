@@ -29,6 +29,7 @@ import ru.itlab.game.Utils.TiledObjectUtil;
 
 import static ru.itlab.game.Utils.Constants.LIVES;
 import static ru.itlab.game.Utils.Constants.MAXLIVES;
+import static ru.itlab.game.Utils.Constants.MaxEnemies;
 import static ru.itlab.game.Utils.Constants.PM;
 import static ru.itlab.game.Utils.Constants.SCORE;
 import static ru.itlab.game.Utils.Constants.SHOOT_RATE;
@@ -45,13 +46,12 @@ public class GameScreen implements Screen {
     OrthogonalTiledMapRenderer tmr;
     Box2DDebugRenderer b2dr;
     double reload = TimeUtils.nanoTime();
-    public boolean gameO = false;
     Stage stage;
     Joystick joystick;
 
     @Override
     public void show() {
-        Gdx.gl.glClearColor(0, 0, 0, 1f);
+        Gdx.gl.glClearColor(94f/256,63f/256,107f/256, 256f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         world = new World(new Vector2(0,0), false);
         world.setContactListener(new ContactListener() {
@@ -122,11 +122,10 @@ public class GameScreen implements Screen {
         joystick = new Joystick(stage.getCamera());
         stage.addActor(joystick);
 
-        for(int i = 0; i < 10; i++) //TODO 2
+        for(int i = 0; i < MaxEnemies; i++) //TODO 2
             enemies.add(new Enemy(world, player.body.getBody().getPosition()));
 
         SCORE = 0;
-        LIVES = MAXLIVES;
     }
 
     @Override
@@ -144,15 +143,14 @@ public class GameScreen implements Screen {
         }
         for(Bullet bullet : bullets){
             bullet.update(delta);
-            if(!bullet.inGame) {
-                bullet.dispose();
+            if(!bullet.inGame)
                 bullets.removeValue(bullet, false);
-            }
         }
+        if(enemies.size <MaxEnemies)
+            enemies.add(new Enemy(world, player.body.getBody().getPosition()));
         for(Enemy enemy : enemies){
             enemy.update(delta, player.body.getBody().getPosition());
             if(!enemy.inGame) {
-                enemy.dispose();
                 enemies.removeValue(enemy, true);
                 SCORE++;
                 Gdx.app.log("SCORE", SCORE+"");
@@ -160,12 +158,9 @@ public class GameScreen implements Screen {
         }
         Gdx.app.log("E size", enemies.size+"");
         Gdx.app.log("B size", bullets.size+"");
-        if(enemies.size <= 0 || LIVES <= 0)
-            gameO = true;
         //Render
-        Gdx.gl.glClearColor(94,63,107, 1);
+        Gdx.gl.glClearColor(94f/256,63f/256,107f/256, 256f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        Gdx.app.log("Check", "cheeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeck");
         batch.setProjectionMatrix(camera.camera.combined);
         b2dr.render(world, camera.camera.combined);
         tmr.render();
@@ -173,7 +168,6 @@ public class GameScreen implements Screen {
         player.render(batch);
         for(Bullet bullet : bullets) {
             bullet.render(batch);
-            Gdx.app.log("Bulletssssssssssssss", "checkedddd");
         }
         for(Enemy enemy : enemies)
             enemy.render(batch);
@@ -188,7 +182,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-        Gdx.gl.glClearColor(94,63,107, 1);
+        Gdx.gl.glClearColor(94f/256,63f/256,107f/256, 256f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         world.dispose();
         stage.dispose();
@@ -200,6 +194,7 @@ public class GameScreen implements Screen {
         joystick.dispose();
         enemies.clear();
         bullets.clear();
+        LIVES = MAXLIVES;
     }
 
     @Override
