@@ -29,9 +29,8 @@ import ru.itlab.game.Utils.TiledObjectUtil;
 
 import static ru.itlab.game.Utils.Constants.LIVES;
 import static ru.itlab.game.Utils.Constants.MAXLIVES;
-import static ru.itlab.game.Utils.Constants.NumOfEnemy;
+import static ru.itlab.game.Utils.Constants.MaxEnemy;
 import static ru.itlab.game.Utils.Constants.PM;
-import static ru.itlab.game.Utils.Constants.PPM;
 import static ru.itlab.game.Utils.Constants.SCORE;
 import static ru.itlab.game.Utils.Constants.SHOOT_RATE;
 
@@ -47,7 +46,6 @@ public class GameScreen implements Screen {
     OrthogonalTiledMapRenderer tmr;
     Box2DDebugRenderer b2dr;
     double reload;
-    public boolean gameO;
     Stage stage;
     Joystick joystick;
 
@@ -56,7 +54,6 @@ public class GameScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         reload = 0;
-        gameO = false;
         world = new World(new Vector2(0,0), false);
         world.setContactListener(new ContactListener() {
             @Override
@@ -121,11 +118,10 @@ public class GameScreen implements Screen {
         stage = new Stage();
         joystick = new Joystick(stage.getCamera());
 
-        for(int i = 0; i < NumOfEnemy; i++) //TODO 2
+        for(int i = 0; i < MaxEnemy; i++) //TODO 2
             enemies.add(new Enemy(world, player.body.getBody().getPosition()));
 
         SCORE = 0;
-        LIVES = MAXLIVES;
     }
 
     @Override
@@ -147,7 +143,7 @@ public class GameScreen implements Screen {
                 bullets.removeValue(bullet, false);
             }
         }
-        if(enemies.size < NumOfEnemy)
+        if(enemies.size < MaxEnemy)
             enemies.add(new Enemy(world, player.body.getBody().getPosition()));
         for(Enemy enemy : enemies){
             enemy.update(delta, player.body.getBody().getPosition());
@@ -156,8 +152,6 @@ public class GameScreen implements Screen {
                 SCORE++;
             }
         }
-        if(LIVES <= 0)
-            gameO = true;
         //Render
         Gdx.gl.glClearColor(94f/256,63f/256,107f/256,256f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -181,6 +175,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
+        Gdx.app.log("GameScreen", "dispose()");
         Gdx.gl.glClearColor(94,63,107, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         world.dispose();
@@ -193,6 +188,7 @@ public class GameScreen implements Screen {
         joystick.dispose();
         enemies.clear();
         bullets.clear();
+        LIVES = MAXLIVES;
     }
 
     @Override

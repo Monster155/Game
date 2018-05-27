@@ -27,7 +27,7 @@ public class Enemy {
     public boolean inGame = true;
     public int live = 5;
     String path;
-    public long change = TimeUtils.nanoTime();
+    public long change = TimeUtils.nanoTime() - 10;
 
     public Enemy(World world, Vector2 pos){
         this.world = world;
@@ -68,8 +68,12 @@ public class Enemy {
         float x,y;
         //Размеры смотреть в логах - самый первые строки, они описываны в TiledObjectUtil
         float ax = 25, bx = 75, ay = 25, by = 75;
-        x = ax + (float)(Math.random() * (bx-ax));
-        y = ay + (float)(Math.random() * (by-ay));
+        do
+            x = ax + (float)(Math.random() * (bx-ax));
+        while(pos.x+SIZE.x*2 > x && pos.x-SIZE.x*2 < x);
+        do
+            y = ay + (float)(Math.random() * (by-ay));
+        while(pos.y+SIZE.y*2 > y && pos.y-SIZE.y*2 < y);
         return new Vector2(x, y);
     }
 

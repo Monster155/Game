@@ -10,6 +10,8 @@ import com.badlogic.gdx.utils.TimeUtils;
 
 import ru.itlab.game.Utils.Constants;
 
+import static ru.itlab.game.Utils.Constants.LIVES;
+
 public class MainActivity extends Game {
 
     public GameScreen gs;
@@ -37,7 +39,7 @@ public class MainActivity extends Game {
     public void render() {
         super.render();
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE) && getScreen() == gs) {
-            setScreen(ms);
+            setScreen(gos);
             gs.dispose();
         }
         if (Gdx.input.isTouched() && getScreen() == ms) {
@@ -58,19 +60,16 @@ public class MainActivity extends Game {
             ts.dispose();
         }
         if (Gdx.input.isTouched() && getScreen() == gos
-                && MathUtils.nanoToSec * (TimeUtils.nanoTime() - time) > 1) {
+                && MathUtils.nanoToSec * (TimeUtils.nanoTime() - time)*2 > 1) {
             Gdx.app.log("MainActivity", "setScreen = ms");
             setScreen(ms);
             gos.dispose();
         }
-        if (gs.gameO) {
+        if (LIVES <= 0) {
+            Gdx.app.log("Screens", "GameOverScreen");
             setScreen(gos);
-            gs.pause();
-            gs.hide();
-            pause();
             gs.dispose();
             time = TimeUtils.nanoTime();
-            gs.gameO = false;
         }
     }
 
