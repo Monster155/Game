@@ -16,7 +16,7 @@ import static ru.itlab.game.Utils.Constants.LIVES;
 import static ru.itlab.game.Utils.Constants.MAXLIVES;
 import static ru.itlab.game.Utils.Constants.SIZE;
 
-public class Joystick extends Actor {
+public class Joystick{
 
     Camera camera;
     Vector3 touchPos, touchPos2;
@@ -51,7 +51,6 @@ public class Joystick extends Actor {
         }
     }
 
-    @Override
     public void act(float delta) {
         touchPos = new Vector3(scale/2, scale/2, 0);
         Constants.stick = new Vector2(0,0);
@@ -112,8 +111,7 @@ public class Joystick extends Actor {
         hearts();
     }
 
-    @Override
-    public void draw(Batch batch, float parentAlpha) {
+    public void draw(Batch batch) {
         batch.setProjectionMatrix(camera.combined);
         batch.draw(circleSp, 0, 0, ciSize.x, ciSize.y);
         batch.draw(cursorSp, touchPos.x-cuSize.x/2, touchPos.y-cuSize.y/2, cuSize.x, cuSize.y);
@@ -126,7 +124,16 @@ public class Joystick extends Actor {
         }
     }
 
+    public void dispose() {
+        circleTex.dispose();
+        cursorTex.dispose();
+        for(int i = 0; i < lifeTexture.length; i++)
+            lifeTexture[i].dispose();
+    }
+
     public void hearts(){
+        for(int i = 0; i < MAXLIVES/2; i++)
+            lifeTexture[i].dispose();
         if(LIVES % 2 == 0){
             for(int i = 0; i < LIVES/2; i++)
                 lifeTexture[i] = new Texture(lifePath+"full.png");
@@ -139,13 +146,5 @@ public class Joystick extends Actor {
             for(int i = LIVES/2+1; i < MAXLIVES/2; i++)
                 lifeTexture[i] = new Texture(lifePath+"empty.png");
         }
-    }
-
-
-    public void dispose() {
-        circleTex.dispose();
-        cursorTex.dispose();
-        for(int i = 0; i < lifeTexture.length; i++)
-            lifeTexture[i].dispose();
     }
 }

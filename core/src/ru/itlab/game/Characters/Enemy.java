@@ -27,19 +27,19 @@ public class Enemy {
     public boolean inGame = true;
     public int live = 5;
     String path;
-    public long change = TimeUtils.nanoTime() + 10;
+    public long change = TimeUtils.nanoTime();
 
     public Enemy(World world, Vector2 pos){
         this.world = world;
         body = Utils.createBox(world, rand(pos), SIZE.x, SIZE.y,
                 false, "enemy", (short) -1);
-        int abb = (int)(Math.random()*4+1);
-        switch(abb){
+        switch((int)(Math.random()*4+1)){
             case 1:path = "PNG/green";break;
             case 2:path = "PNG/pink";break;
             case 3:path = "PNG/sand";break;
             case 4:path = "PNG/yellow";break;
         }
+        Gdx.app.log("Path for Enemy", path+"");
         texture = new Texture(path + "1.png");
     }
 
@@ -50,10 +50,9 @@ public class Enemy {
         }
         body.getBody().setLinearVelocity(delta*E_SPEED*rot.x, delta*E_SPEED*rot.y);
         if(!inGame){
-            Gdx.app.log("Enemy", "deleted");
-            texture.dispose();
             world.destroyBody(body.getBody());
             body = null;
+            texture.dispose();
         }
     }
 
@@ -69,12 +68,8 @@ public class Enemy {
         float x,y;
         //Размеры смотреть в логах - самый первые строки, они описываны в TiledObjectUtil
         float ax = 25, bx = 75, ay = 25, by = 75;
-        do
-            x = ax + (float)(Math.random() * (bx-ax));
-        while(pos.x+SIZE.x*2 > x && pos.x-SIZE.x*2 < x);
-        do
-            y = ay + (float)(Math.random() * (by-ay));
-        while(pos.y+SIZE.y*2 > y && pos.y-SIZE.y*2 < y);
+        x = ax + (float)(Math.random() * (bx-ax));
+        y = ay + (float)(Math.random() * (by-ay));
         return new Vector2(x, y);
     }
 

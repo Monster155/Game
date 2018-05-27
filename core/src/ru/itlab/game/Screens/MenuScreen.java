@@ -5,8 +5,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
 import ru.itlab.game.Utils.Constants;
 
@@ -28,7 +26,7 @@ public class MenuScreen implements Screen {
 
     @Override
     public void render(float delta){
-        Gdx.gl.glClearColor(94f/256,63f/256,107f/256, 256f);
+        Gdx.gl.glClearColor(94,63,107, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
         batch.draw(texture,

@@ -55,6 +55,7 @@ public class Player {
 
     public void damaged(){
         LIVES--;
+        texture.dispose();
         if(LIVES  > MAXLIVES*3f/4f){ //Damage level 1
             texture = new Texture(path+"1.png");
         } else if(LIVES > MAXLIVES/2f){ //Damage level 2

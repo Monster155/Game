@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Pool;
 
 import ru.itlab.game.Utils.Utils;
 
@@ -14,7 +15,7 @@ import static ru.itlab.game.Utils.Constants.B_SIZE;
 import static ru.itlab.game.Utils.Constants.B_SPEED;
 import static ru.itlab.game.Utils.Constants.SIZE;
 
-public class Bullet {
+public class Bullet{
 
     Vector2 rot;
     public Fixture body;
@@ -35,8 +36,7 @@ public class Bullet {
         //Ну update как update, думаю и так всё понятно
         body.getBody().setLinearVelocity(delta*B_SPEED*rot.x, delta*B_SPEED*rot.y);
         if(!inGame){
-            Gdx.app.log("Bullet", "deleted");
-            world.destroyBody(body.getBody());
+            world.destroyBody(body.getBody());            ;
             body = null;
             texture.dispose();
         }
