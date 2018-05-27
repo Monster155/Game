@@ -21,10 +21,12 @@ public class GameOverScreen implements Screen {
     Texture texture;
     GlyphLayout glyphLayout;
     float x1, x2;
+    ResultsScreen rs;
 
     @Override
     public void show() {
-        ResultsScreen.saveResults();
+        rs = new ResultsScreen();
+        rs.saveResults();
 
         batch = new SpriteBatch();
         texture = new Texture("endScreen.png");

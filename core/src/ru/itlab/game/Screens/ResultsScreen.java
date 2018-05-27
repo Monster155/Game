@@ -10,14 +10,22 @@ public class ResultsScreen implements Screen{
 
     Preferences prefs;
     String name = "I am the best";
+    String nums[] = new String[]{"First", "Second", "Third", "Fourth", "Fifth",
+            "Sixth", "Seventh", "Eighth", "Ninth", "Tenth"};
     //prefs.getBoolean("tutorial", false)
     //prefs.putBoolean("tutorial", true);
     //prefs.flush(); //сохранениеx
 
+    public ResultsScreen(){
+        prefs = Gdx.app.getPreferences("Preferences");
+        if((prefs.getLong("First"+"s", 0)) == 0)
+            generatePrefs();
+    }
+
     @Override
     public void show() {
         prefs = Gdx.app.getPreferences("Preferences");
-        if(prefs.getLong("First", 0) == 0)
+        if(prefs.getLong("First"+"s", 0) == 0)
             generatePrefs();
     }
 
@@ -51,29 +59,44 @@ public class ResultsScreen implements Screen{
 
     }
 
-    public static void saveResults() {
+    public void saveResults() {
+        int newPlace = 9;
+        for(int i = 0; i < nums.length; i++) {
+            if(prefs.getLong(nums[i]+"s", 0) < SCORE){
+                newPlace = i;
+                break;
+            }
+        }
+        for(int i = nums.length-1; i > newPlace; i--) {
+            prefs.putLong(nums[i]+"s", prefs.getLong(nums[i-1]+"s")).flush();
+            prefs.putString(nums[i], prefs.getString(nums[i-1])).flush();
+        }
+        prefs.putLong(nums[newPlace]+"s", SCORE).flush();
+        prefs.putString(nums[newPlace], name).flush();
+        for(int i = 0; i < nums.length; i++)
+            Gdx.app.log("Prefs", prefs.getLong(nums[i]+"s")+" "+prefs.getString(nums[i]));
     }
 
     public void generatePrefs(){
-        prefs.putLong("First", 10).flush();
-        prefs.putString("First", "Drake").flush();
-        prefs.putLong("Second", 10).flush();
-        prefs.putString("Second", "James").flush();
-        prefs.putLong("Third", 10).flush();
-        prefs.putString("Third", "Sam").flush();
-        prefs.putLong("Fourth", 10).flush();
-        prefs.putString("Fourth", "Ashley").flush();
-        prefs.putLong("Fifth", 10).flush();
-        prefs.putString("Fifth", "Johny").flush();
-        prefs.putLong("Sixth", 10).flush();
-        prefs.putString("Sixth", "Lucy").flush();
-        prefs.putLong("Seventh", 10).flush();
-        prefs.putString("Seventh", "Bob").flush();
-        prefs.putLong("Eighth", 10).flush();
-        prefs.putString("Eighth", "Andy").flush();
-        prefs.putLong("Ninth", 10).flush();
-        prefs.putString("Ninth", "Samantha").flush();
-        prefs.putLong("Tenth", 10).flush();
-        prefs.putString("Tenth", "Jack").flush();
+        prefs.putLong(nums[0]+"s", 10).flush();
+        prefs.putString(nums[0], "Drake").flush();
+        prefs.putLong(nums[1]+"s", 10).flush();
+        prefs.putString(nums[1], "James").flush();
+        prefs.putLong(nums[2]+"s", 10).flush();
+        prefs.putString(nums[2], "Sam").flush();
+        prefs.putLong(nums[3]+"s", 10).flush();
+        prefs.putString(nums[3], "Ashley").flush();
+        prefs.putLong(nums[4]+"s", 10).flush();
+        prefs.putString(nums[4], "Johny").flush();
+        prefs.putLong(nums[5]+"s", 10).flush();
+        prefs.putString(nums[5], "Lucy").flush();
+        prefs.putLong(nums[6]+"s", 10).flush();
+        prefs.putString(nums[6], "Bob").flush();
+        prefs.putLong(nums[7]+"s", 10).flush();
+        prefs.putString(nums[7], "Andy").flush();
+        prefs.putLong(nums[8]+"s", 10).flush();
+        prefs.putString(nums[8], "Samantha").flush();
+        prefs.putLong(nums[9]+"s", 0).flush();
+        prefs.putString(nums[9], name+"").flush();
     }
 }
