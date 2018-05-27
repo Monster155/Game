@@ -3,12 +3,14 @@ package ru.itlab.game.Screens;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.TimeUtils;
 
-import ru.itlab.game.Utils.Constants;
 
 import static ru.itlab.game.Utils.Constants.LIVES;
 
@@ -18,49 +20,64 @@ public class MainActivity extends Game {
     public GameOverScreen gos;
     public MenuScreen ms;
     public TutorialScreen ts;
+    public ResultsScreen rs;
     Music music;
     long time = TimeUtils.nanoTime();
-    long tutor = TimeUtils.nanoTime();
+    long tutor;
     String mainMusic = "party.mp3", GOMusic = "";
-    Preferences prefs;
-
 
     @Override
     public void create() {
-        prefs = Gdx.app.getPreferences("Preferences");
+        Gdx.input.setCatchBackKey(true);
+
         gs = new GameScreen();
         ms = new MenuScreen();
         gos = new GameOverScreen();
         ts = new TutorialScreen();
+        rs = new ResultsScreen();
         setScreen(ms);
     }
 
     @Override
     public void render() {
         super.render();
-        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE) && getScreen() == gs) {
+        if(getScreen() == ms && ms.screen != 0){
+            switch (ms.screen){
+                case 1:
+                    setScreen(gs);
+                    ms.dispose();
+                    Gdx.app.log("ChangeScreen", "GameScreen");
+                    break;
+                case 2:
+                    setScreen(rs);
+                    ms.dispose();
+                    Gdx.app.log("ChangeScreen", "ResultsScreen");
+                    break;
+                case 3:
+                    setScreen(ts);
+                    ms.dispose();
+                    Gdx.app.log("ChangeScreen", "TutorialScreen");
+                    break;
+            }
+            ms.screen = 0;
+            tutor = TimeUtils.nanoTime();
+        }
+        if ((Gdx.input.isKeyPressed(Input.Keys.ESCAPE) || Gdx.input.isKeyPressed(Input.Keys.BACK))
+                && getScreen() == gs) {
             setScreen(gos);
             gs.dispose();
         }
-        if (Gdx.input.isTouched() && getScreen() == ms) {
-            if (prefs.getBoolean("tutorial", false)) {
-                setScreen(gs);
-            }
-            else {
-                setScreen(ts);
-                tutor = TimeUtils.nanoTime();
-            }
-            ms.dispose();
+        if(Gdx.input.isKeyPressed(Input.Keys.BACK) && getScreen().equals(rs)){
+            setScreen(ms);
+            rs.dispose();
         }
-        if(Gdx.input.isTouched() && getScreen() == ts
-                && MathUtils.nanoToSec * (TimeUtils.nanoTime() - tutor) > 3){
-            prefs.putBoolean("tutorial", true);
-            prefs.flush(); //сохранение
-            setScreen(gs);
+        if((Gdx.input.justTouched() || Gdx.input.isKeyPressed(Input.Keys.BACK))
+                && getScreen().equals(ts) && MathUtils.nanoToSec * (TimeUtils.nanoTime() - tutor) > 1f){
+            setScreen(ms);
             ts.dispose();
         }
-        if (Gdx.input.isTouched() && getScreen() == gos
-                && MathUtils.nanoToSec * (TimeUtils.nanoTime() - time)*2 > 1) {
+        if ((Gdx.input.justTouched() || Gdx.input.isKeyPressed(Input.Keys.BACK))
+                && getScreen() == gos && MathUtils.nanoToSec * (TimeUtils.nanoTime() - time)*2f > 1f) {
             Gdx.app.log("MainActivity", "setScreen = ms");
             setScreen(ms);
             gos.dispose();

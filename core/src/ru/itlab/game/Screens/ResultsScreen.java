@@ -24,9 +24,7 @@ public class ResultsScreen implements Screen{
 
     @Override
     public void show() {
-        prefs = Gdx.app.getPreferences("Preferences");
-        if(prefs.getLong("First"+"s", 0) == 0)
-            generatePrefs();
+
     }
 
     @Override
