@@ -51,7 +51,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-        Gdx.gl.glClearColor(0, 0, 0, 1f);
+        Gdx.gl.glClearColor(94f/256,63f/256,107f/256,256f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         reload = 0;
         world = new World(new Vector2(0,0), false);
@@ -176,7 +176,7 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
         Gdx.app.log("GameScreen", "dispose()");
-        Gdx.gl.glClearColor(94,63,107, 1);
+        Gdx.gl.glClearColor(94f/256,63f/256,107f/256,256f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         world.dispose();
         stage.dispose();

@@ -52,7 +52,7 @@ public class MenuScreen implements Screen {
     public void render(float delta){
         buttons();
         //Render
-        Gdx.gl.glClearColor(94,63,107, 1);
+        Gdx.gl.glClearColor(94f/256,63f/256,107f/256,256f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
         batch.draw(texture,

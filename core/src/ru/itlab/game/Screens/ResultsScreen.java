@@ -3,6 +3,16 @@ package ru.itlab.game.Screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.List;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 import static ru.itlab.game.Utils.Constants.SCORE;
 
@@ -12,9 +22,13 @@ public class ResultsScreen implements Screen{
     String name = "I am the best";
     String nums[] = new String[]{"First", "Second", "Third", "Fourth", "Fifth",
             "Sixth", "Seventh", "Eighth", "Ninth", "Tenth"};
-    //prefs.getBoolean("tutorial", false)
-    //prefs.putBoolean("tutorial", true);
-    //prefs.flush(); //сохранениеx
+
+    SpriteBatch batch;
+    Vector2 pos;
+    Texture texture;
+    BitmapFont font;
+    GlyphLayout glyphLayout;
+    float x1, y1, x2, y2;
 
     public ResultsScreen(){
         prefs = Gdx.app.getPreferences("Preferences");
@@ -24,12 +38,38 @@ public class ResultsScreen implements Screen{
 
     @Override
     public void show() {
+        batch = new SpriteBatch();
+        pos = new Vector2(0,0);
+        font = new BitmapFont(Gdx.files.internal("data/text.fnt"));
 
+        glyphLayout = new GlyphLayout();
+
+        glyphLayout.setText(font, "JokerThe");
+        x1 = glyphLayout.width;
+        y1 = glyphLayout.height;
+        glyphLayout.setText(font, "150");
+        x2 = glyphLayout.width;
+        y2 = glyphLayout.height;
     }
 
     @Override
     public void render(float delta) {
+        Gdx.gl.glClearColor(94f/256,63f/256,107f/256,256f);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        batch.begin();
+        for(int i = 0; i < nums.length; i++) {
+            font.draw(batch,
+                    prefs.getString(nums[i]) + "",
+                    50,
+                    Gdx.graphics.getHeight() - y1*(i+1));
+            font.draw(batch,
+                    prefs.getLong(nums[i] + "s") + "",
+                    Gdx.graphics.getWidth()-x2,
+                    Gdx.graphics.getHeight() - y2*(i+1));
+
+        }
+        batch.end();
     }
 
     @Override
@@ -76,10 +116,10 @@ public class ResultsScreen implements Screen{
     }
 
     public void generatePrefs(){
-        prefs.putLong(nums[0]+"s", 10).flush();
-        prefs.putString(nums[0], "Drake").flush();
-        prefs.putLong(nums[1]+"s", 10).flush();
-        prefs.putString(nums[1], "James").flush();
+        prefs.putLong(nums[0]+"s", 135).flush();
+        prefs.putString(nums[0], "Bulat").flush();
+        prefs.putLong(nums[1]+"s", 105).flush();
+        prefs.putString(nums[1], "Damir").flush();
         prefs.putLong(nums[2]+"s", 10).flush();
         prefs.putString(nums[2], "Sam").flush();
         prefs.putLong(nums[3]+"s", 10).flush();
