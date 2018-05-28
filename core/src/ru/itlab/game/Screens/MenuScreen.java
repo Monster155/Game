@@ -17,7 +17,7 @@ public class MenuScreen implements Screen {
 
     Texture texture, textureBtn1, textureBtn2, textureBtn3;
     SpriteBatch batch;
-    float scale, drawX;
+    float scale, drawX, btnScale, height, width;
     public Rectangle rectBtn1, rectBtn2, rectBtn3;
 
     Stage stage;
@@ -34,14 +34,17 @@ public class MenuScreen implements Screen {
         Constants.Scale = scale;
 
         //посчитать координаты кнопок и текстуры
-        textureBtn1 = new Texture("badlogic.jpg");
-        textureBtn2 = new Texture("badlogic.jpg");
-        textureBtn3 = new Texture("badlogic.jpg");
-        rectBtn1 = new Rectangle(0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight()/6f);
-        rectBtn2 = new Rectangle(0,Gdx.graphics.getHeight()/6f,
-                Gdx.graphics.getWidth(),Gdx.graphics.getHeight()/6f);
-        rectBtn3 = new Rectangle(0,Gdx.graphics.getHeight()/3f,
-                Gdx.graphics.getWidth(),Gdx.graphics.getHeight()/6f);
+        textureBtn1 = new Texture("buttons/tutorBtn.png");
+        textureBtn2 = new Texture("buttons/recordsBtn.png");
+        textureBtn3 = new Texture("buttons/playBtn.png");
+
+        btnScale = textureBtn1.getWidth() / textureBtn1.getHeight();
+        height = Gdx.graphics.getHeight()/6f;
+        width = Gdx.graphics.getWidth()/2f - btnScale*height/2f;
+
+        rectBtn1 = new Rectangle(width,0, btnScale*height,height);
+        rectBtn2 = new Rectangle(width,height,btnScale*height,height);
+        rectBtn3 = new Rectangle(width,height*2f,btnScale*height,height);
 
         stage = new Stage();
         camera = stage.getCamera();

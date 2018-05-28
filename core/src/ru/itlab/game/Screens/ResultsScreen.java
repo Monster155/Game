@@ -19,13 +19,12 @@ import static ru.itlab.game.Utils.Constants.SCORE;
 public class ResultsScreen implements Screen{
 
     Preferences prefs;
-    String name = "I am the best";
+    String name = "Player 1";
     String nums[] = new String[]{"First", "Second", "Third", "Fourth", "Fifth",
             "Sixth", "Seventh", "Eighth", "Ninth", "Tenth"};
 
     SpriteBatch batch;
     Vector2 pos;
-    Texture texture;
     BitmapFont font;
     GlyphLayout glyphLayout;
     float x1, y1, x2, y2;
@@ -118,22 +117,23 @@ public class ResultsScreen implements Screen{
     public void generatePrefs(){
         prefs.putLong(nums[0]+"s", 135).flush();
         prefs.putString(nums[0], "Bulat").flush();
-        prefs.putLong(nums[1]+"s", 105).flush();
-        prefs.putString(nums[1], "Damir").flush();
-        prefs.putLong(nums[2]+"s", 10).flush();
-        prefs.putString(nums[2], "Sam").flush();
-        prefs.putLong(nums[3]+"s", 10).flush();
-        prefs.putString(nums[3], "Ashley").flush();
-        prefs.putLong(nums[4]+"s", 10).flush();
+        prefs.putLong(nums[1]+"s", 114).flush();
+        prefs.putString(nums[1], "Leonid").flush();
+        prefs.putLong(nums[2]+"s", 105).flush();
+        prefs.putString(nums[2], "Damir").flush();
+        prefs.putLong(nums[3]+"s", 94).flush();
+        prefs.putString(nums[3], "Kamilya").flush();
+        prefs.putLong(nums[4]+"s", 87).flush();
         prefs.putString(nums[4], "Johny").flush();
-        prefs.putLong(nums[5]+"s", 10).flush();
+        prefs.putLong(nums[5]+"s", 73).flush();
         prefs.putString(nums[5], "Lucy").flush();
-        prefs.putLong(nums[6]+"s", 10).flush();
+        prefs.putLong(nums[6]+"s", 60).flush();
         prefs.putString(nums[6], "Bob").flush();
-        prefs.putLong(nums[7]+"s", 10).flush();
+        prefs.putLong(nums[7]+"s", 59).flush();
         prefs.putString(nums[7], "Andy").flush();
-        prefs.putLong(nums[8]+"s", 10).flush();
+        prefs.putLong(nums[8]+"s", 47).flush();
         prefs.putString(nums[8], "Samantha").flush();
+
         prefs.putLong(nums[9]+"s", 0).flush();
         prefs.putString(nums[9], name+"").flush();
     }

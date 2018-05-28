@@ -45,9 +45,9 @@ public class MainActivity extends Game {
             switch (ms.screen){
                 case 1:
                     setScreen(gs);
-                    ms.dispose();
-                    Gdx.app.log("ChangeScreen", "GameScreen");
-                    break;
+                ms.dispose();
+                Gdx.app.log("ChangeScreen", "GameScreen");
+                break;
                 case 2:
                     setScreen(rs);
                     ms.dispose();
@@ -67,16 +67,16 @@ public class MainActivity extends Game {
             setScreen(gos);
             gs.dispose();
         }
+        if((Gdx.input.isTouched() || Gdx.input.isKeyPressed(Input.Keys.BACK))
+                && getScreen().equals(ts) && MathUtils.nanoToSec * (TimeUtils.nanoTime() - tutor) > 1f) {
+            setScreen(ms);
+            ts.dispose();
+        }
         if(Gdx.input.isKeyPressed(Input.Keys.BACK) && getScreen().equals(rs)){
             setScreen(ms);
             rs.dispose();
         }
-        if((Gdx.input.justTouched() || Gdx.input.isKeyPressed(Input.Keys.BACK))
-                && getScreen().equals(ts) && MathUtils.nanoToSec * (TimeUtils.nanoTime() - tutor) > 1f){
-            setScreen(ms);
-            ts.dispose();
-        }
-        if ((Gdx.input.justTouched() || Gdx.input.isKeyPressed(Input.Keys.BACK))
+        if ((Gdx.input.isTouched() || Gdx.input.isKeyPressed(Input.Keys.BACK))
                 && getScreen() == gos && MathUtils.nanoToSec * (TimeUtils.nanoTime() - time)*2f > 1f) {
             Gdx.app.log("MainActivity", "setScreen = ms");
             setScreen(ms);
