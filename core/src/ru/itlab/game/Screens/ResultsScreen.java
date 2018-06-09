@@ -14,12 +14,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
+import ru.itlab.game.SpecialClasses.DialogWindow;
+
 import static ru.itlab.game.Utils.Constants.SCORE;
 
 public class ResultsScreen implements Screen{
 
     Preferences prefs;
-    String name = "Player 1";
+    public static String name = "Player 1";
     String nums[] = new String[]{"First", "Second", "Third", "Fourth", "Fifth",
             "Sixth", "Seventh", "Eighth", "Ninth", "Tenth"};
 
@@ -115,6 +117,9 @@ public class ResultsScreen implements Screen{
     }
 
     public void generatePrefs(){
+        DialogWindow dw = new DialogWindow(this);
+        Gdx.input.getTextInput(dw, "Enter your name for Records", "", "Enter Your Name");
+
         prefs.putLong(nums[0]+"s", 135).flush();
         prefs.putString(nums[0], "Bulat").flush();
         prefs.putLong(nums[1]+"s", 114).flush();
@@ -124,16 +129,17 @@ public class ResultsScreen implements Screen{
         prefs.putLong(nums[3]+"s", 94).flush();
         prefs.putString(nums[3], "Kamilya").flush();
         prefs.putLong(nums[4]+"s", 87).flush();
-        prefs.putString(nums[4], "Johny").flush();
+        prefs.putString(nums[4], "Andrey").flush();
         prefs.putLong(nums[5]+"s", 73).flush();
-        prefs.putString(nums[5], "Lucy").flush();
+        prefs.putString(nums[5], "Katya").flush();
         prefs.putLong(nums[6]+"s", 60).flush();
-        prefs.putString(nums[6], "Bob").flush();
+        prefs.putString(nums[6], "Amir").flush();
         prefs.putLong(nums[7]+"s", 59).flush();
-        prefs.putString(nums[7], "Andy").flush();
+        prefs.putString(nums[7], "Kirill").flush();
         prefs.putLong(nums[8]+"s", 47).flush();
-        prefs.putString(nums[8], "Samantha").flush();
-
+        prefs.putString(nums[8], "Ayrat").flush();
+    }
+    public void contin(){
         prefs.putLong(nums[9]+"s", 0).flush();
         prefs.putString(nums[9], name+"").flush();
     }

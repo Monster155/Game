@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 
+import ru.itlab.game.SpecialClasses.DialogWindow;
 import ru.itlab.game.Utils.Constants;
 
 public class MenuScreen implements Screen {
@@ -107,17 +108,17 @@ public class MenuScreen implements Screen {
         if (Gdx.input.isTouched()) {
             Vector3 touchPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
             camera.unproject(touchPos);
-            //Кнопка старта
+            //Кнопка обучения
             if (touchPos.x > rectBtn1.x && touchPos.x < rectBtn1.x + rectBtn1.width &&
                     touchPos.y > rectBtn1.y && touchPos.y < rectBtn1.y + rectBtn1.height) {
                 screen = 3;
             }
-            //Кнопка обучения
+            //Кнопка таблицы результатов
             else if (touchPos.x > rectBtn2.x && touchPos.x < rectBtn2.x + rectBtn2.width &&
                     touchPos.y > rectBtn2.y && touchPos.y < rectBtn2.y + rectBtn2.height) {
                 screen = 2;
             }
-            //Кнопка таблицы результатов
+            //Кнопка старта
             else if (touchPos.x > rectBtn3.x && touchPos.x < rectBtn3.x + rectBtn3.width &&
                     touchPos.y > rectBtn3.y && touchPos.y < rectBtn3.y + rectBtn3.height) {
                 screen = 1;
