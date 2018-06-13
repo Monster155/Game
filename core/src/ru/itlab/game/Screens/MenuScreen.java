@@ -11,15 +11,14 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 
-import ru.itlab.game.SpecialClasses.DialogWindow;
 import ru.itlab.game.Utils.Constants;
 
 public class MenuScreen implements Screen {
 
-    Texture texture, textureBtn1, textureBtn2, textureBtn3;
+    Texture texture, tB1, tB2, tB3, tBS;
     SpriteBatch batch;
     float scale, drawX, btnScale, height, width;
-    public Rectangle rectBtn1, rectBtn2, rectBtn3;
+    public Rectangle rectBtn1, rectBtn2, rectBtn3, rectBtnSet;
 
     Stage stage;
     Camera camera;
@@ -35,17 +34,19 @@ public class MenuScreen implements Screen {
         Constants.Scale = scale;
 
         //посчитать координаты кнопок и текстуры
-        textureBtn1 = new Texture("buttons/tutorBtn.png");
-        textureBtn2 = new Texture("buttons/recordsBtn.png");
-        textureBtn3 = new Texture("buttons/playBtn.png");
+        tB1 = new Texture("buttons/tutorBtn.png");
+        tB2 = new Texture("buttons/recordsBtn.png");
+        tB3 = new Texture("buttons/playBtn.png");
+        tBS = new Texture("buttons/setBtn.png");
 
-        btnScale = textureBtn1.getWidth() / textureBtn1.getHeight();
+        btnScale = tB1.getWidth() / tB1.getHeight();
         height = Gdx.graphics.getHeight()/6f;
         width = Gdx.graphics.getWidth()/2f - btnScale*height/2f;
 
         rectBtn1 = new Rectangle(width,0, btnScale*height,height);
         rectBtn2 = new Rectangle(width,height,btnScale*height,height);
         rectBtn3 = new Rectangle(width,height*2f,btnScale*height,height);
+        rectBtnSet = new Rectangle(0,0,height, height);
 
         stage = new Stage();
         camera = stage.getCamera();
@@ -64,9 +65,10 @@ public class MenuScreen implements Screen {
                 0,
                 scale,
                 Gdx.graphics.getHeight());
-        draw(batch, textureBtn1, rectBtn1);
-        draw(batch, textureBtn2, rectBtn2);
-        draw(batch, textureBtn3, rectBtn3);
+        draw(batch, tB1, rectBtn1);
+        draw(batch, tB2, rectBtn2);
+        draw(batch, tB3, rectBtn3);
+        draw(batch, tBS, rectBtnSet);
         batch.end();
     }
 
@@ -122,6 +124,11 @@ public class MenuScreen implements Screen {
             else if (touchPos.x > rectBtn3.x && touchPos.x < rectBtn3.x + rectBtn3.width &&
                     touchPos.y > rectBtn3.y && touchPos.y < rectBtn3.y + rectBtn3.height) {
                 screen = 1;
+            }
+            //Кнопка настроек
+            else if (touchPos.x > rectBtnSet.x && touchPos.x < rectBtnSet.x + rectBtnSet.width &&
+                    touchPos.y > rectBtnSet.y && touchPos.y < rectBtnSet.y + rectBtnSet.height) {
+                screen = 4;
             }
         }
     }

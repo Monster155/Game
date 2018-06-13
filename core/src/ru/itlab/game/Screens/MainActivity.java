@@ -17,14 +17,14 @@ import static ru.itlab.game.Utils.Constants.LIVES;
 public class MainActivity extends Game {
 
     public GameScreen gs;
+    public SettingsScreen ss;
     public GameOverScreen gos;
     public MenuScreen ms;
     public TutorialScreen ts;
     public ResultsScreen rs;
-    Music music;
+    Music mainMusic, GOMusic;
     long time = TimeUtils.nanoTime();
     long tutor;
-    String mainMusic = "party.mp3", GOMusic = "";
 
     @Override
     public void create() {
@@ -35,6 +35,10 @@ public class MainActivity extends Game {
         gos = new GameOverScreen();
         ts = new TutorialScreen();
         rs = new ResultsScreen();
+        ss = new SettingsScreen();
+        GOMusic = Gdx.audio.newMusic(Gdx.files.internal("Music/Title theme.mp3"));
+        mainMusic = Gdx.audio.newMusic(Gdx.files.internal("Music/Abandon ship.mp3"));
+        music(true, mainMusic);
         setScreen(ms);
     }
 
@@ -45,9 +49,11 @@ public class MainActivity extends Game {
             switch (ms.screen){
                 case 1:
                     setScreen(gs);
-                ms.dispose();
-                Gdx.app.log("ChangeScreen", "GameScreen");
-                break;
+                    ms.dispose();
+                    music(false, mainMusic);
+                    music(true, GOMusic);
+                    Gdx.app.log("ChangeScreen", "GameScreen");
+                    break;
                 case 2:
                     setScreen(rs);
                     ms.dispose();
@@ -58,6 +64,11 @@ public class MainActivity extends Game {
                     ms.dispose();
                     Gdx.app.log("ChangeScreen", "TutorialScreen");
                     break;
+                case 4:
+                    setScreen(ss);
+                    ms.dispose();
+                    Gdx.app.log("ChangeScreen", "SettingsScreen");
+                    break;
             }
             ms.screen = 0;
             tutor = TimeUtils.nanoTime();
@@ -66,6 +77,8 @@ public class MainActivity extends Game {
                 && getScreen() == gs) {
             setScreen(gos);
             gs.dispose();
+            music(false, GOMusic);
+            music(true, mainMusic);
         }
         if((Gdx.input.isTouched() || Gdx.input.isKeyPressed(Input.Keys.BACK))
                 && getScreen().equals(ts) && MathUtils.nanoToSec * (TimeUtils.nanoTime() - tutor) > 1f) {
@@ -90,9 +103,8 @@ public class MainActivity extends Game {
         }
     }
 
-    public void music(boolean begin, String name) {
+    public void music(boolean begin, Music music) {
         if (begin) {
-            music = Gdx.audio.newMusic(Gdx.files.internal(name));
             music.setLooping(true);
             music.play();
         } else {

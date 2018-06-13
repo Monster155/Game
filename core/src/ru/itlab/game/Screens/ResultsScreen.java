@@ -3,6 +3,7 @@ package ru.itlab.game.Screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -41,11 +42,12 @@ public class ResultsScreen implements Screen{
     public void show() {
         batch = new SpriteBatch();
         pos = new Vector2(0,0);
-        font = new BitmapFont(Gdx.files.internal("data/text.fnt"));
+        font = new BitmapFont(Gdx.files.internal("data/font.fnt"));
+        font.getData().setScale(0.5f);
 
         glyphLayout = new GlyphLayout();
 
-        glyphLayout.setText(font, "JokerThe");
+        glyphLayout.setText(font, "TheJoker");
         x1 = glyphLayout.width;
         y1 = glyphLayout.height;
         glyphLayout.setText(font, "150");
